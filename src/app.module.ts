@@ -15,9 +15,9 @@ import configuration from './config/configuration'
 	imports: [
 		TypeOrmModule.forRoot({
 			type: 'mysql',
-			host: 'localhost',
+			host: '39.98.50.162',
 			port: 3306,
-			username: 'root',
+			username: 'score',
 			password: 'Ma13578960..',
 			database: 'score',
 			entities: Entities,
