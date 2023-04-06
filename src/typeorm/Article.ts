@@ -1,32 +1,29 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
-import { User } from './User'
+import { Column, Entity } from 'typeorm'
+import { BaseEntity } from './Base'
+import { Exclude, Expose } from 'class-transformer'
 
+@Exclude()
 @Entity({ name: 'article' })
-export class Article {
-	@PrimaryGeneratedColumn({ type: 'bigint' })
-	id: number
+export class Article extends BaseEntity {
+	@Expose()
+	@Column({ comment: '文章标题' })
+	title!: string
 
-	@Column({ unique: true })
-	title: string
+	@Expose()
+	@Column({ comment: '文章描述', nullable: true })
+	description?: string
 
-	@Column({ nullable: true })
-	description: string
+	@Expose()
+	@Column({ comment: '文章内容', type: 'longtext' })
+	content!: string
 
-	@Column()
-	content: string
+	@Expose()
+	@Column({ comment: '点赞', type: 'int', default: 0 })
+	thumb?: string
 
-	@Column({ type: 'int', default: '0' })
-	thumb: string
+	@Column({ comment: '文章排序', default: 0 })
+	customOrder?: number
 
-	@Column({ type: 'boolean', default: true })
-	public: boolean
-
-	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-	createAt: string
-
-	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-	updatedAt: string
-
-	@ManyToOne(() => User, (user) => user.articles)
-	user: User
+	@Column({ comment: '是否公开', type: 'boolean', default: true })
+	public?: boolean
 }

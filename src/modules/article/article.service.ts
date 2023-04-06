@@ -1,33 +1,44 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { CategoryDto } from './article.dto'
+import { ArticleDto } from './article.dto'
 import { Article } from '@/typeorm/Article'
 
+import { pagination } from '@/utils/database'
+import { PaginateDto } from '@/utils/dto'
+
 @Injectable()
-export class CategoryService {
+export class ArticleService {
 	constructor(@InjectRepository(Article) private ArticleRepository: Repository<Article>) {}
 
-	async create(params: CategoryDto) {
+	async create(params: ArticleDto) {
 		const { title } = params
-		const tag = await this.ArticleRepository.findOneBy({ title })
-		if (tag) throw new ConflictException('标签已存在')
-		const newTag = await this.ArticleRepository.create(params)
-		return await this.ArticleRepository.save(newTag)
+		const one = await this.ArticleRepository.findOneBy({ title })
+		if (one) throw new ConflictException('标题已存在')
+		const data = await this.ArticleRepository.create(params)
+		return await this.ArticleRepository.save(data)
+	}
+
+	async findAll(query: PaginateDto) {
+		return await pagination(this.ArticleRepository, query)
+	}
+
+	async findOne(id: number) {
+		const data = await this.ArticleRepository.findOneBy({ id })
+		if (!data) throw new NotFoundException('文章未找到')
+		return data
 	}
 
 	async delete(id: number) {
 		const tag = await this.ArticleRepository.findOneBy({ id })
 		if (!tag) throw new NotFoundException('标签未找到')
-		this.ArticleRepository.delete({ id: tag.id })
+		this.ArticleRepository.delete({ id })
 		return tag
 	}
 
-	async modify(id: number, params: CategoryDto) {
+	async update(id: number, params: ArticleDto) {
 		const tag = await this.ArticleRepository.findOneBy({ id })
 		if (!tag) throw new NotFoundException('标签未找到')
 		this.ArticleRepository.update({ id }, { ...params })
 	}
-
-	private async aggregate() {}
 }

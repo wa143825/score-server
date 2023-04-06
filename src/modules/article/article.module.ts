@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common'
-import { CategoryController } from './article.controller'
-import { CategoryService } from './article.service'
+import { ArticleController } from './article.controller'
+import { ArticleService } from './article.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { ArticleCategory } from '@/typeorm/Category'
+import { Article } from '@/typeorm/Article'
 
 @Module({
-	imports: [TypeOrmModule.forFeature([ArticleCategory])],
-	controllers: [CategoryController],
-	providers: [CategoryService],
+	imports: [TypeOrmModule.forFeature([Article])],
+	controllers: [ArticleController],
+	providers: [ArticleService],
 })
-export class TagModule {}
+export class ArticleModule {}

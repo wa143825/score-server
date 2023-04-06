@@ -1,22 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity } from 'typeorm'
+import { BaseEntity } from './Base'
 
 @Entity({ name: 'article_category' })
-export class ArticleCategory {
-	@PrimaryGeneratedColumn({ type: 'bigint' })
-	id: number
+export class ArticleCategory extends BaseEntity {
+	@Column({ comment: '分类名称' })
+	name!: string
 
-	@Column({ unique: true })
-	name: string
-
-	@Column({ nullable: true })
-	description: string
-
-	@Column({ default: 0 })
-	articlesCount: number
-
-	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-	createAt: string
-
-	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-	updatedAt: string
+	@Column({ comment: '分类描述' })
+	description?: string
 }

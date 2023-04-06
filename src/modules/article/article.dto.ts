@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator'
 
-export class CategoryDto {
+export class ArticleDto {
 	@IsString()
 	@IsNotEmpty({ message: '标题不能为空' })
 	title: string

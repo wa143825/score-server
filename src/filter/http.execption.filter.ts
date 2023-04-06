@@ -8,6 +8,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
 		const response = ctx.getResponse<FastifyReply>()
 		const request = ctx.getRequest<FastifyRequest>()
 		const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR
+		console.log(exception)
+
 		if (exception instanceof HttpException) {
 			return response.status(status).send({
 				code: status,

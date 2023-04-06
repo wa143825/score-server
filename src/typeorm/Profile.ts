@@ -1,19 +1,22 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity({ name: 'user_profiles' })
+enum IGender {
+	MALE,
+	FEMALE,
+	UNKNOWN,
+}
+
+@Entity({ name: 'user_profile' })
 export class Profile {
-	@PrimaryGeneratedColumn({ type: 'bigint' })
-	id: number
+	@PrimaryGeneratedColumn('uuid')
+	id!: number
 
-	@Column()
-	firstName: string
+	@Column({ comment: '用户昵称' })
+	nickname: string
 
-	@Column()
-	lastName: string
+	@Column({ comment: '用户年龄' })
+	age?: number
 
-	@Column()
-	age: number
-
-	@Column()
-	dob: string
+	@Column({ comment: '用户性别' })
+	gender: IGender
 }

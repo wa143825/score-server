@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity({ name: 'article_tag' })
 export class ArticleTag {
-	@PrimaryGeneratedColumn({ type: 'bigint' })
-	id: number
+	@PrimaryGeneratedColumn('uuid')
+	id!: number
 
 	@Column({ unique: true })
 	name: string
@@ -14,9 +14,9 @@ export class ArticleTag {
 	@Column({ default: 0 })
 	articlesCount: number
 
-	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-	createAt: string
+	@CreateDateColumn({ comment: '创建时间' })
+	createAt!: Date
 
-	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-	updatedAt: string
+	@UpdateDateColumn({ comment: '更新时间' })
+	updatedAt!: Date
 }
