@@ -16,14 +16,14 @@ export class CategoryService {
 		return await this.CategoryRepository.save(newTag)
 	}
 
-	async delete(id: number) {
+	async delete(id: string) {
 		const tag = await this.CategoryRepository.findOneBy({ id })
 		if (!tag) throw new NotFoundException('标签未找到')
 		this.CategoryRepository.delete({ id: tag.id })
 		return tag
 	}
 
-	async modify(id: number, params: CategoryDto) {
+	async modify(id: string, params: CategoryDto) {
 		const tag = await this.CategoryRepository.findOneBy({ id })
 		if (!tag) throw new NotFoundException('标签未找到')
 		this.CategoryRepository.update({ id }, { ...params })

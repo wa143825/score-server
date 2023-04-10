@@ -23,20 +23,20 @@ export class ArticleService {
 		return await pagination(this.ArticleRepository, query)
 	}
 
-	async findOne(id: number) {
+	async findOne(id: string) {
 		const data = await this.ArticleRepository.findOneBy({ id })
 		if (!data) throw new NotFoundException('文章未找到')
 		return data
 	}
 
-	async delete(id: number) {
+	async delete(id: string) {
 		const tag = await this.ArticleRepository.findOneBy({ id })
 		if (!tag) throw new NotFoundException('标签未找到')
 		this.ArticleRepository.delete({ id })
 		return tag
 	}
 
-	async update(id: number, params: ArticleDto) {
+	async update(id: string, params: ArticleDto) {
 		const tag = await this.ArticleRepository.findOneBy({ id })
 		if (!tag) throw new NotFoundException('标签未找到')
 		this.ArticleRepository.update({ id }, { ...params })

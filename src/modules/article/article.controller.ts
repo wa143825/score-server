@@ -15,7 +15,7 @@ export class ArticleController {
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: number) {
+	findOne(@Param('id') id: string) {
 		return this.articleService.findOne(id)
 	}
 
@@ -25,12 +25,12 @@ export class ArticleController {
 	}
 
 	@Patch(':id')
-	update(@Param('id') id: number, @Body() data: ArticleDto) {
+	update(@Param('id') id: string, @Body() data: ArticleDto) {
 		return this.articleService.update(id, data)
 	}
 
 	@Delete(':id')
-	delete(@Param('id') id: number) {
+	delete(@Param('id') id: string) {
 		return this.articleService.delete(id)
 	}
 }

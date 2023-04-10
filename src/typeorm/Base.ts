@@ -5,7 +5,7 @@ import { Exclude, Expose } from 'class-transformer'
 export abstract class BaseEntity {
 	@Expose()
 	@PrimaryGeneratedColumn('uuid')
-	id!: number
+	id!: string
 
 	@Expose()
 	@CreateDateColumn({ comment: '创建时间' })

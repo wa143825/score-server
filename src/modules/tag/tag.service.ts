@@ -17,14 +17,14 @@ export class TagService {
 		return await this.TagRepository.save(newTag)
 	}
 
-	async delete(id: number) {
+	async delete(id: string) {
 		const tag = await this.TagRepository.findOneBy({ id })
 		if (!tag) throw new NotFoundException('标签未找到')
 		this.TagRepository.delete({ id: tag.id })
 		return tag
 	}
 
-	async modify(id: number, params: TagDto) {
+	async modify(id: string, params: TagDto) {
 		const tag = await this.TagRepository.findOneBy({ id })
 		if (!tag) throw new NotFoundException('标签未找到')
 		this.TagRepository.update({ id }, { ...params })

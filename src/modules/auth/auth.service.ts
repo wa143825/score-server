@@ -98,7 +98,7 @@ export class AuthService {
 	}
 
 	// 生成一个token
-	private async getAccessToken(user: User, sessionId: number) {
+	private async getAccessToken(user: User, sessionId: string) {
 		const payload = {
 			id: user.id,
 			sessionId,

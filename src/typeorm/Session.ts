@@ -1,11 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Column, Entity, ManyToOne } from 'typeorm'
 import { User } from './User'
-
+import { BaseEntity } from './Base'
 @Entity({ name: 'user_session' })
-export class Session {
-	@PrimaryGeneratedColumn('uuid')
-	id!: number
-
+export class Session extends BaseEntity {
 	@Column()
 	ipAddress: string
 
@@ -20,12 +17,6 @@ export class Session {
 
 	@Column()
 	operatingSystem: string
-
-	@CreateDateColumn({ comment: '创建时间' })
-	createAt!: Date
-
-	@UpdateDateColumn({ comment: '更新时间' })
-	updatedAt!: Date
 
 	@ManyToOne(() => User, (user) => user.sessions)
 	user: User

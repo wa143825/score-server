@@ -2,9 +2,12 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm'
 import { Profile } from './Profile'
 import { Session } from './Session'
 import { BaseEntity } from './Base'
+import { Exclude, Expose } from 'class-transformer'
 
+@Exclude()
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
+	@Expose()
 	@Column({ comment: '用户手机号' })
 	phone!: string
 
@@ -14,7 +17,8 @@ export class User extends BaseEntity {
 	@Column({ nullable: true })
 	authStrategy: string
 
-	@OneToOne(() => Profile)
+	@Expose()
+	@OneToOne(() => Profile, (profile) => profile.user)
 	@JoinColumn()
 	profile: Profile
 

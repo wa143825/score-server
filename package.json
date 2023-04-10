@@ -10,6 +10,7 @@
 		"build": "nest build",
 		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
 		"start": "nest start",
+		"hotdev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
 		"dev": "nest start --watch",
 		"debug": "nest start --debug --watch",
 		"prod": "node dist/main",
@@ -40,11 +41,13 @@
 		"mysql2": "^2.3.3",
 		"reflect-metadata": "^0.1.13",
 		"rimraf": "^3.0.2",
+		"run-script-webpack-plugin": "^0.1.1",
 		"rxjs": "^7.8.0",
 		"stacktrace-js": "^2.0.2",
 		"typeorm": "^0.3.12",
 		"ua-parser-js": "^1.0.35",
-		"webpack": "^5.77.0"
+		"webpack": "^5.77.0",
+		"webpack-node-externals": "^3.0.0"
 	},
 	"devDependencies": {
 		"@nestjs/cli": "^9.3.0",

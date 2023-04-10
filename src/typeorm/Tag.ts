@@ -1,22 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Column, Entity } from 'typeorm'
+import { BaseEntity } from '@/typeorm/Base'
 
 @Entity({ name: 'article_tag' })
-export class ArticleTag {
-	@PrimaryGeneratedColumn('uuid')
-	id!: number
-
+export class ArticleTag extends BaseEntity {
 	@Column({ unique: true })
 	name: string
 
 	@Column({ nullable: true })
 	description: string
-
-	@Column({ default: 0 })
-	articlesCount: number
-
-	@CreateDateColumn({ comment: '创建时间' })
-	createAt!: Date
-
-	@UpdateDateColumn({ comment: '更新时间' })
-	updatedAt!: Date
 }

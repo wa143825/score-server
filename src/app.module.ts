@@ -7,6 +7,7 @@ import Entities from '@/typeorm'
 import { AppController } from './app.controller'
 import { AuthModule } from './modules/auth/auth.module'
 import { TagModule } from './modules/tag/tag.module'
+import { UserModule } from './modules/user/user.module'
 import { ArticleModule } from './modules/article/article.module'
 import { TransformInterceptor } from './interceptor/transform.interceptor'
 import { AppIntercepter } from './interceptor/app.interceptor'
@@ -35,6 +36,7 @@ import configuration from './config/configuration'
 		AuthModule,
 		TagModule,
 		ArticleModule,
+		UserModule,
 	],
 	providers: [
 		{

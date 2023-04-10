@@ -1,13 +1,15 @@
-import { IsIn, IsOptional } from 'class-validator'
+import { IsNotEmpty, IsOptional } from 'class-validator'
 
-enum EGander {
-	MALE = 'MALE',
-	FEMALE = 'FEMALE',
-	UNKNOWN = 'UNKNOWN',
+enum EGender {
+	MALE,
+	FEMALE,
+	UNKNOWN,
 }
 
 export class CreateUserDto {
+	@IsNotEmpty({ message: '用户名不能为空' })
 	username: string
+	@IsNotEmpty({ message: '密码不能为空' })
 	password: string
 }
 
@@ -17,10 +19,14 @@ export class UpdateUserDto {
 }
 
 export class CreateUserProfileDto {
-	firstName: string
-	lastName: string
+	@IsNotEmpty({ message: '昵称不能为空' })
+	nickname: string
+
+	@IsOptional()
 	age: number
-	dob: string
+
+	@IsOptional()
+	gender: EGender
 }
 
 export class CreateUserPostDto {
