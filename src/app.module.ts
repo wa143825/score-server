@@ -5,14 +5,16 @@ import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core'
 import Entities from '@/typeorm'
 
 import { AppController } from './app.controller'
-import { AuthModule } from './modules/auth/auth.module'
-import { TagModule } from './modules/tag/tag.module'
-import { UserModule } from './modules/user/user.module'
 import { ArticleModule } from './modules/article/article.module'
 import { TransformInterceptor } from './interceptor/transform.interceptor'
 import { AppIntercepter } from './interceptor/app.interceptor'
 import { HttpExceptionFilter } from './filter/http.execption.filter'
 import configuration from './config/configuration'
+
+import { CategoryModule } from './modules/category/category.module'
+import { AuthModule } from './modules/auth/auth.module'
+import { TagModule } from './modules/tag/tag.module'
+import { UserModule } from './modules/user/user.module'
 
 @Module({
 	imports: [
@@ -36,6 +38,7 @@ import configuration from './config/configuration'
 		AuthModule,
 		TagModule,
 		ArticleModule,
+		CategoryModule,
 		UserModule,
 	],
 	providers: [

@@ -8,12 +8,12 @@ export class UserController {
 	constructor(private userService: UserService) {}
 
 	@Get()
-	async getUsers(@Query() query: PaginateDto) {
+	async get(@Query() query: PaginateDto) {
 		return await this.userService.findUsers(query)
 	}
 
 	@Get(':id')
-	async getUserById(@Param('id') id: string) {
+	async getById(@Param('id') id: string) {
 		return await this.userService.findUserById(id)
 	}
 

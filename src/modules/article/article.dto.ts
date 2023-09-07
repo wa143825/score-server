@@ -1,16 +1,19 @@
-import { IsString, IsNotEmpty } from 'class-validator'
+import { IsString, IsNotEmpty, IsBoolean } from 'class-validator'
 
 export class ArticleDto {
 	@IsString()
 	@IsNotEmpty({ message: '标题不能为空' })
 	title: string
 
-	description: string
+	@IsString()
+	description?: string
 
-	cover: string
+	@IsString()
+	cover?: string
 
 	@IsNotEmpty({ message: '正文不能为空' })
 	content: string
 
-	public: boolean
+	@IsBoolean({ message: '是否发布' })
+	public?: boolean
 }

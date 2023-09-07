@@ -20,7 +20,7 @@ export class UserService {
 	}
 
 	async findUserById(id: string) {
-		const data = await this.userRepository.createQueryBuilder('user').where({ id }).leftJoinAndSelect('user.profile', 'profile').getOne()
+		const data = await this.userRepository.createQueryBuilder('user').where({ id }).innerJoinAndSelect('user.profile', 'profile').getOne()
 		return data
 	}
 
