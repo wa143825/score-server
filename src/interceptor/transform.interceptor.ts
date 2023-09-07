@@ -17,9 +17,17 @@ export class TransformInterceptor implements NestInterceptor {
 					msg
 				}
 				if (data === true) {
+					// 1、修改成功，只返回200
 					return res
-				} else {
+				} else if (data) {
+					// 2、有数据，为列表则返回row, 对象为data
 					return data instanceof Array ? {...res, row: data} : {...res, data}
+				} else {
+					// 3、无数据则返回400
+					return {
+						code: 400,
+						msg: '数据未找到'
+					}
 				}
 			}),
 		)

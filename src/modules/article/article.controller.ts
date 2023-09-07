@@ -9,7 +9,6 @@ export class ArticleController {
 	constructor(private articleService: ArticleService) {}
 
 	@Get()
-	@Msg('获取文章列表成功')
 	findAll(@Query() query: PaginateDto) {
 		return this.articleService.findAll(query)
 	}

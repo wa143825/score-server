@@ -1,33 +1,36 @@
 import { Body, Controller, Delete, Get, Post, Put, Param, Query } from '@nestjs/common'
+import { Msg } from '@/decorator/responser.decorator'
 import { CategoryDto } from './category.dto'
 import { CategoryService } from './category.service'
-
 import { PaginateDto } from '@/utils/dto'
-
 @Controller('category')
 export class CategoryController {
-	constructor(private categoryService: CategoryService) {}
+	constructor(private cateService: CategoryService) {}
 
 	@Get()
-	async get(@Query() query: PaginateDto) {
-		return await this.categoryService.find(query)
+	getTags(@Query() query: PaginateDto) {
+		return this.cateService.get(query)
 	}
 
 	@Get(':id')
-	async getById(@Param('id') id: string) {
-		return await this.categoryService.findById(id)
+	getTag(@Param('id') id: string) {
+		return this.cateService.getOne(id)
 	}
 
 	@Post()
 	create(@Body() data: CategoryDto) {
-		return this.categoryService.create(data)
+		return this.cateService.create(data)
 	}
 
 	@Delete(':id')
+	@Msg('删除成功')
 	delete(@Param('id') id: string) {
-		return this.categoryService.delete(id)
+		return this.cateService.delete(id)
 	}
 
-	@Put()
-	modify() {}
+	@Put(':id')
+	@Msg('修改成功')
+	modify(@Param('id') id: string, @Body() data: CategoryDto) {
+		return this.cateService.modify(id, data)
+	}
 }

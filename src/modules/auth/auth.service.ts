@@ -7,6 +7,7 @@ import UAParser from 'ua-parser-js'
 
 import { User } from '@/typeorm/User'
 import { Session } from '@/typeorm/Session'
+import { Profile } from '@/typeorm/Profile'
 import { USER_CONFLICT, USER_NOT_FOUND, INVALID_PASSWORD, INCORRECT_PASSWORD, NO_TOKEN_PROVIDED, SESSION_NOT_FOUND } from '@/constant/errors.contant'
 import { LOGIN_accessToken } from '@/constant/access.contant'
 import { TokenService } from '@/providers/token/token.service'
@@ -18,6 +19,7 @@ export class AuthService {
 	constructor(
 		@InjectRepository(User) private userRepository: Repository<User>,
 		@InjectRepository(Session) private sessionRepository: Repository<Session>,
+		@InjectRepository(Profile) private ProfileRepository: Repository<Profile>,
 		private configService: ConfigService,
 		private tokenService: TokenService,
 	) {}
@@ -28,7 +30,12 @@ export class AuthService {
 		const user = await this.userRepository.findOneBy({ phone })
 		if (user) throw new ConflictException(USER_CONFLICT)
 		const newUser = this.userRepository.create({ phone, password: await this.hashAndValidatePassword(password) })
-		return await this.userRepository.save(newUser)
+		const newProfile = this.ProfileRepository.create({nickname: `用户${phone.substring(7,11)}`})
+		newUser.profile = newProfile
+		const save = await this.userRepository.save(newUser)
+		if (save) {
+			return true
+		}
 	}
 
 	// 用户登陆

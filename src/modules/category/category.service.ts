@@ -4,45 +4,54 @@ import { Repository } from 'typeorm'
 import { CategoryDto } from './category.dto'
 import { ArticleCategory } from '@/typeorm/Category'
 import { Article } from '@/typeorm/Article'
-
-import { pagination } from '@/utils/database'
 import { PaginateDto } from '@/utils/dto'
 
 @Injectable()
 export class CategoryService {
 	constructor(
-		@InjectRepository(ArticleCategory) private CategoryRepository: Repository<ArticleCategory>,
+		@InjectRepository(ArticleCategory) private CateRepository: Repository<ArticleCategory>,
 		@InjectRepository(Article) private ArticleRepository: Repository<Article>,
 	) {}
 
-	async find(query: PaginateDto) {
-		return await pagination(this.CategoryRepository, query)
+	async getOne(id: string) {
+		return await this.CateRepository.findOneBy({ id })
 	}
 
-	async findById(id: string) {
-		const data = await this.CategoryRepository.createQueryBuilder('category').where({ id }).getOne()
-		return data
+	async get({ pageNum = 1, pageSize = 10, sort = 1 }: PaginateDto) {
+		const list = await this.CateRepository.find({
+			take: pageSize,
+			skip: (pageNum - 1) * pageSize,
+			order: {
+        updatedAt: sort === 1 ? "ASC" : 'DESC',
+    	}
+		})
+		return list
 	}
 
 	async create(params: CategoryDto) {
 		const { name } = params
-		const tag = await this.CategoryRepository.findOneBy({ name })
-		if (tag) throw new ConflictException('标签已存在')
-		const newTag = await this.CategoryRepository.create(params)
-		return await this.CategoryRepository.save(newTag)
+		const data = await this.CateRepository.findOneBy({ name })
+		if (data) throw new ConflictException('分类已存在')
+		const newData = await this.CateRepository.create(params)
+		return await this.CateRepository.save(newData)
 	}
 
 	async delete(id: string) {
-		const tag = await this.CategoryRepository.findOneBy({ id })
-		if (!tag) throw new NotFoundException('标签未找到')
-		this.CategoryRepository.delete({ id: tag.id })
-		return tag
+		const data = await this.getOne(id)
+		if (!data) throw new NotFoundException('标签未找到')
+		const res = await this.CateRepository.delete({ id: data.id })
+		if(res.affected) {
+			return true
+		}
 	}
 
 	async modify(id: string, params: CategoryDto) {
-		const tag = await this.CategoryRepository.findOneBy({ id })
-		if (!tag) throw new NotFoundException('标签未找到')
-		this.CategoryRepository.update({ id }, { ...params })
+		const data = await this.getOne(id)
+		if (!data) throw new NotFoundException('标签未找到')
+		const res = await this.CateRepository.update({ id }, { ...params })
+		if(res.affected) {
+			return true
+		}
 	}
 
 	private async aggregate() {}
