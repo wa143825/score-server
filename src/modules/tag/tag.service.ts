@@ -18,21 +18,35 @@ export class TagService {
 	}
 
 	async delete(id: string) {
-		const tag = await this.TagRepository.findOneBy({ id })
+		const tag = await this.getOne(id)
 		if (!tag) throw new NotFoundException('标签未找到')
-		this.TagRepository.delete({ id: tag.id })
-		return tag
+		const res = await this.TagRepository.delete({ id: tag.id })
+		if(res.affected) {
+			return true
+		}
 	}
 
 	async modify(id: string, params: TagDto) {
-		const tag = await this.TagRepository.findOneBy({ id })
+		const tag = await this.getOne(id)
 		if (!tag) throw new NotFoundException('标签未找到')
-		this.TagRepository.update({ id }, { ...params })
+		const res = await this.TagRepository.update({ id }, { ...params })
+		if(res.affected) {
+			return true
+		}
 	}
 
-	async get(query: PaginateDto) {
-		const { pageNum, pageSize } = query
-		const tags = await this.TagRepository.find({ take: pageSize, skip: (pageNum - 1) * pageSize })
+	async getOne(id: string) {
+		return await this.TagRepository.findOneBy({ id })
+	}
+
+	async get({ pageNum = 1, pageSize = 10, sort = 1 }: PaginateDto) {
+		const tags = await this.TagRepository.find({
+			take: pageSize,
+			skip: (pageNum - 1) * pageSize,
+			order: {
+        updatedAt: sort === 1 ? "ASC" : 'DESC',
+    	}
+		})
 		return tags
 	}
 

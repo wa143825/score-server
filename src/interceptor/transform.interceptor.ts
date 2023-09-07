@@ -12,17 +12,14 @@ export class TransformInterceptor implements NestInterceptor {
 		const msg = this.ref.get('msg', target)
 		return next.handle().pipe(
 			map((data) => {
+				let res = {
+					code: 200,
+					msg
+				}
 				if (data === true) {
-					return {
-						code: 200,
-						msg,
-					}
+					return res
 				} else {
-					return {
-						code: 200,
-						msg,
-						data,
-					}
+					return data instanceof Array ? {...res, row: data} : {...res, data}
 				}
 			}),
 		)

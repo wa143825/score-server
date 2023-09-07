@@ -20,10 +20,10 @@ import { UserModule } from './modules/user/user.module'
 	imports: [
 		TypeOrmModule.forRoot({
 			type: 'mysql',
-			host: '39.98.50.162',
-			port: 3306,
-			username: 'score',
-			password: 'Ma13578960..',
+			host: 'localhost',
+			port: 3307,
+			username: 'root',
+			password: '123456',
 			database: 'score',
 			entities: Entities,
 			synchronize: true,

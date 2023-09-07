@@ -18,8 +18,15 @@ export class PaginateDto {
 	@Transform(({ value }) => Number(value))
 	pageNum: number
 
-	@IsIn([SortType.Asc, SortType.Desc])
+	@IsIn([SortType.Asc, SortType.Desc], {message: '请输入1(升序)或者-1(降序)'})
 	@IsOptional()
+	@Transform(({ value }) => Number(value))
 	@IsNumber()
 	sort: SortType.Asc | SortType.Desc
+}
+
+export const PaginateValue:PaginateDto = {
+	pageNum: 10,
+	pageSize: 10,
+	sort: 1
 }
