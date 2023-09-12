@@ -8,13 +8,13 @@ export class CategoryController {
 	constructor(private cateService: CategoryService) {}
 
 	@Get()
-	getTags(@Query() query: PaginateDto) {
-		return this.cateService.get(query)
+	findAll(@Query() query: PaginateDto) {
+		return this.cateService.findAll(query)
 	}
 
 	@Get(':id')
-	getTag(@Param('id') id: string) {
-		return this.cateService.getOne(id)
+	findOne(@Param('id') id: string) {
+		return this.cateService.findOne(id)
 	}
 
 	@Post()

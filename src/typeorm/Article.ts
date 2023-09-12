@@ -19,6 +19,10 @@ export class Article extends BaseEntity {
 	content!: string
 
 	@Expose()
+	@Column({ comment: '封面' })
+	cover?: string
+
+	@Expose()
 	@Column({ comment: '点赞', type: 'int', default: 0 })
 	thumb?: string
 

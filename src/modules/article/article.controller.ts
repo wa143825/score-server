@@ -1,5 +1,5 @@
-import { Body, Controller, Query, Delete, Get, Post, Param, Patch } from '@nestjs/common'
-import { ArticleDto } from './article.dto'
+import { Body, Controller, Query, Delete, Get, Post, Param, Patch, HttpCode } from '@nestjs/common'
+import { CreateArticleDto, UpdateArticleDto } from './article.dto'
 import { ArticleService } from './article.service'
 import { PaginateDto } from '@/utils/dto'
 import { Msg } from '@/decorator/responser.decorator'
@@ -19,16 +19,19 @@ export class ArticleController {
 	}
 
 	@Post()
-	create(@Body() data: ArticleDto) {
+	@HttpCode(200)
+	create(@Body() data: CreateArticleDto) {
 		return this.articleService.create(data)
 	}
 
 	@Patch(':id')
-	update(@Param('id') id: string, @Body() data: ArticleDto) {
+	@Msg('修改成功')
+	update(@Param('id') id: string, @Body() data: UpdateArticleDto) {
 		return this.articleService.update(id, data)
 	}
 
 	@Delete(':id')
+	@Msg('删除成功')
 	delete(@Param('id') id: string) {
 		return this.articleService.delete(id)
 	}

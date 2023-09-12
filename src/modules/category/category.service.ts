@@ -4,28 +4,24 @@ import { Repository } from 'typeorm'
 import { CreateCateDto, UpdateCateDto } from './category.dto'
 import { ArticleCategory } from '@/typeorm/Category'
 import { Article } from '@/typeorm/Article'
+
 import { PaginateDto } from '@/utils/dto'
+import { pagination } from '@/utils/database'
 
 @Injectable()
 export class CategoryService {
 	constructor(
 		@InjectRepository(ArticleCategory) private CateRepository: Repository<ArticleCategory>,
-		@InjectRepository(Article) private ArticleRepository: Repository<Article>,
 	) {}
 
-	async getOne(id: string) {
-		return await this.CateRepository.findOneBy({ id })
+	async findOne(id: string) {
+		const data = await this.CateRepository.findOneBy({ id })
+		if (!data) throw new NotFoundException('分类未找到')
+		return data
 	}
 
-	async get({ pageNum = 1, pageSize = 10, sort = -1 }: PaginateDto) {
-		const list = await this.CateRepository.find({
-			take: pageSize,
-			skip: (pageNum - 1) * pageSize,
-			order: {
-        updatedAt: sort === 1 ? "ASC" : 'DESC',
-    	}
-		})
-		return list
+	async findAll(query: PaginateDto) {
+		return await pagination(this.CateRepository, query)
 	}
 
 	async create(params: CreateCateDto) {
@@ -37,9 +33,9 @@ export class CategoryService {
 	}
 
 	async delete(id: string) {
-		const data = await this.getOne(id)
-		if (!data) throw new NotFoundException('标签未找到')
-		const res = await this.CateRepository.delete({ id: data.id })
+		await this.findOne(id)
+
+		const res = await this.CateRepository.delete({ id })
 		if(res.affected) {
 			return true
 		}
@@ -47,13 +43,11 @@ export class CategoryService {
 
 	async modify(params: UpdateCateDto) {
 		const {id, ...p} = params
-		const data = await this.getOne(id)
-		if (!data) throw new NotFoundException('标签未找到')
+		await this.findOne(id)
+
 		const res = await this.CateRepository.update({ id }, p)
 		if(res.affected) {
 			return true
 		}
 	}
-
-	private async aggregate() {}
 }

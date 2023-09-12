@@ -8,13 +8,13 @@ export class TagController {
 	constructor(private tagService: TagService) {}
 
 	@Get()
-	getTags(@Query() query: PaginateDto) {
-		return this.tagService.get(query)
+	findAll(@Query() query: PaginateDto) {
+		return this.tagService.findAll(query)
 	}
 
 	@Get(':id')
-	getTag(@Param('id') id: string) {
-		return this.tagService.getOne(id)
+	findOne(@Param('id') id: string) {
+		return this.tagService.findOne(id)
 	}
 
 	@Post()

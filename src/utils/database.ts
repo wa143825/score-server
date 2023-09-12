@@ -8,7 +8,7 @@ type PaginationReturn<Entity extends ObjectLiteral> = {
 
 export const pagination = async <Entity extends ObjectLiteral>(
 	query: Repository<Entity>,
-	{ pageNum, pageSize }: PaginateDto,
+	{ pageNum = 1, pageSize = 10 }: PaginateDto,
 	options?: FindOneOptions<Entity>,
 ): Promise<PaginationReturn<Entity>> => {
 	const [list, total] = await query.findAndCount({

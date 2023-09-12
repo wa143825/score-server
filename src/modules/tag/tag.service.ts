@@ -3,25 +3,22 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateTagDto, UpdateTagDto } from './tag.dto'
 import { ArticleTag } from '@/typeorm/Tag'
+
 import { PaginateDto } from '@/utils/dto'
+import { pagination } from '@/utils/database'
 
 @Injectable()
 export class TagService {
 	constructor(@InjectRepository(ArticleTag) private TagRepository: Repository<ArticleTag>) {}
 
-	async getOne(id: string) {
-		return await this.TagRepository.findOneBy({ id })
+	async findOne(id: string) {
+		const data = await this.TagRepository.findOneBy({ id })
+		if (!data) throw new NotFoundException('标签未找到')
+		return data
 	}
 
-	async get({ pageNum = 1, pageSize = 10, sort = -1 }: PaginateDto) {
-		const list = await this.TagRepository.find({
-			take: pageSize,
-			skip: (pageNum - 1) * pageSize,
-			order: {
-        updatedAt: sort === 1 ? "ASC" : 'DESC',
-    	}
-		})
-		return list
+	async findAll(query: PaginateDto) {
+		return await pagination(this.TagRepository, query)
 	}
 
 	async create(params: CreateTagDto) {
@@ -33,9 +30,9 @@ export class TagService {
 	}
 
 	async delete(id: string) {
-		const data = await this.getOne(id)
-		if (!data) throw new NotFoundException('标签未找到')
-		const res = await this.TagRepository.delete({ id: data.id })
+		await this.findOne(id)
+
+		const res = await this.TagRepository.delete({ id })
 		if(res.affected) {
 			return true
 		}
@@ -43,8 +40,8 @@ export class TagService {
 
 	async modify(params: UpdateTagDto) {
 		const {id, ...p} = params
-		const data = await this.getOne(id)
-		if (!data) throw new NotFoundException('标签未找到')
+		await this.findOne(id)
+
 		const res = await this.TagRepository.update({ id }, p)
 		if(res.affected) {
 			return true
