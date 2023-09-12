@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm'
-import { BaseEntity } from './Base'
+import { Column, Entity, ManyToOne } from 'typeorm'
 import { Exclude, Expose } from 'class-transformer'
+import { BaseEntity } from './Base'
+import { ArticleCategory } from './Category'
 
 @Exclude()
 @Entity({ name: 'article' })
@@ -26,4 +27,7 @@ export class Article extends BaseEntity {
 
 	@Column({ comment: '是否公开', type: 'boolean', default: true })
 	public?: boolean
+
+	@ManyToOne(() => ArticleCategory, category => category.articles)
+	category: ArticleCategory
 }

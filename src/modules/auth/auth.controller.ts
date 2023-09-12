@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Ip, Headers } from '@nestjs/common'
+import { Body, Controller, Post, Ip, Headers, HttpCode } from '@nestjs/common'
 import { Msg } from '@/decorator/responser.decorator'
 
 import { AuthService } from './auth.service'
@@ -16,6 +16,7 @@ export class AuthController {
 
 	@Post('register')
 	@Msg('注册成功')
+	@HttpCode(200)
 	async register(@Body() data: AuthDto) {
 		return this.authService.register(data)
 	}

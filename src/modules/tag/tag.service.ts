@@ -1,7 +1,7 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { TagDto } from './tag.dto'
+import { CreateTagDto, UpdateTagDto } from './tag.dto'
 import { ArticleTag } from '@/typeorm/Tag'
 import { PaginateDto } from '@/utils/dto'
 
@@ -13,7 +13,7 @@ export class TagService {
 		return await this.TagRepository.findOneBy({ id })
 	}
 
-	async get({ pageNum = 1, pageSize = 10, sort = 1 }: PaginateDto) {
+	async get({ pageNum = 1, pageSize = 10, sort = -1 }: PaginateDto) {
 		const list = await this.TagRepository.find({
 			take: pageSize,
 			skip: (pageNum - 1) * pageSize,
@@ -24,7 +24,7 @@ export class TagService {
 		return list
 	}
 
-	async create(params: TagDto) {
+	async create(params: CreateTagDto) {
 		const { name } = params
 		const tag = await this.TagRepository.findOneBy({ name })
 		if (tag) throw new ConflictException('标签已存在')
@@ -41,10 +41,11 @@ export class TagService {
 		}
 	}
 
-	async modify(id: string, params: TagDto) {
+	async modify(params: UpdateTagDto) {
+		const {id, ...p} = params
 		const data = await this.getOne(id)
 		if (!data) throw new NotFoundException('标签未找到')
-		const res = await this.TagRepository.update({ id }, { ...params })
+		const res = await this.TagRepository.update({ id }, p)
 		if(res.affected) {
 			return true
 		}

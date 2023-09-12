@@ -32,10 +32,9 @@ export class AuthService {
 		const newUser = this.userRepository.create({ phone, password: await this.hashAndValidatePassword(password) })
 		const newProfile = this.ProfileRepository.create({nickname: `用户${phone.substring(7,11)}`})
 		newUser.profile = newProfile
-		const save = await this.userRepository.save(newUser)
-		if (save) {
-			return true
-		}
+		await this.ProfileRepository.save(newProfile)
+		await this.userRepository.save(newUser)
+		return true
 	}
 
 	// 用户登陆

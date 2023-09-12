@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Post, Put, Param, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode } from '@nestjs/common'
 import { Msg } from '@/decorator/responser.decorator'
-import { CategoryDto } from './category.dto'
+import { CreateCateDto, UpdateCateDto } from './category.dto'
 import { CategoryService } from './category.service'
 import { PaginateDto } from '@/utils/dto'
 @Controller('category')
@@ -18,7 +18,8 @@ export class CategoryController {
 	}
 
 	@Post()
-	create(@Body() data: CategoryDto) {
+	@HttpCode(200)
+	create(@Body() data: CreateCateDto) {
 		return this.cateService.create(data)
 	}
 
@@ -28,9 +29,9 @@ export class CategoryController {
 		return this.cateService.delete(id)
 	}
 
-	@Put(':id')
+	@Put()
 	@Msg('修改成功')
-	modify(@Param('id') id: string, @Body() data: CategoryDto) {
-		return this.cateService.modify(id, data)
+	modify(@Body() data: UpdateCateDto) {
+		return this.cateService.modify(data)
 	}
 }

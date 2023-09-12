@@ -1,7 +1,7 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { CategoryDto } from './category.dto'
+import { CreateCateDto, UpdateCateDto } from './category.dto'
 import { ArticleCategory } from '@/typeorm/Category'
 import { Article } from '@/typeorm/Article'
 import { PaginateDto } from '@/utils/dto'
@@ -17,7 +17,7 @@ export class CategoryService {
 		return await this.CateRepository.findOneBy({ id })
 	}
 
-	async get({ pageNum = 1, pageSize = 10, sort = 1 }: PaginateDto) {
+	async get({ pageNum = 1, pageSize = 10, sort = -1 }: PaginateDto) {
 		const list = await this.CateRepository.find({
 			take: pageSize,
 			skip: (pageNum - 1) * pageSize,
@@ -28,7 +28,7 @@ export class CategoryService {
 		return list
 	}
 
-	async create(params: CategoryDto) {
+	async create(params: CreateCateDto) {
 		const { name } = params
 		const data = await this.CateRepository.findOneBy({ name })
 		if (data) throw new ConflictException('分类已存在')
@@ -45,10 +45,11 @@ export class CategoryService {
 		}
 	}
 
-	async modify(id: string, params: CategoryDto) {
+	async modify(params: UpdateCateDto) {
+		const {id, ...p} = params
 		const data = await this.getOne(id)
 		if (!data) throw new NotFoundException('标签未找到')
-		const res = await this.CateRepository.update({ id }, { ...params })
+		const res = await this.CateRepository.update({ id }, p)
 		if(res.affected) {
 			return true
 		}

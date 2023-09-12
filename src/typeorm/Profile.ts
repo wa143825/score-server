@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToOne } from 'typeorm'
-import { User } from './User'
 import { Exclude, Expose } from 'class-transformer'
+import { User } from './User'
 
 enum EGender {
 	MALE,
@@ -19,11 +19,11 @@ export class Profile {
 	nickname: string
 
 	@Expose()
-	@Column({ comment: '用户年龄' })
+	@Column({ comment: '用户年龄', nullable: true })
 	age?: number
 
 	@Expose()
-	@Column({ comment: '用户性别' })
+	@Column({ comment: '用户性别', default: EGender.UNKNOWN })
 	gender: EGender
 
 	@OneToOne(() => User, (user) => user.profile)

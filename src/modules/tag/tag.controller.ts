@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Post, Put, Param, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode } from '@nestjs/common'
 import { Msg } from '@/decorator/responser.decorator'
-import { TagDto } from './tag.dto'
+import { CreateTagDto, UpdateTagDto } from './tag.dto'
 import { TagService } from './tag.service'
 import { PaginateDto } from '@/utils/dto'
 @Controller('tag')
@@ -18,7 +18,8 @@ export class TagController {
 	}
 
 	@Post()
-	create(@Body() data: TagDto) {
+	@HttpCode(200)
+	create(@Body() data: CreateTagDto) {
 		return this.tagService.create(data)
 	}
 
@@ -28,9 +29,10 @@ export class TagController {
 		return this.tagService.delete(id)
 	}
 
-	@Put(':id')
+	@Put()
 	@Msg('修改成功')
-	modify(@Param('id') id: string, @Body() data: TagDto) {
-		return this.tagService.modify(id, data)
+	modify(@Body() data: UpdateTagDto) {
+		console.log(data);
+		return this.tagService.modify(data)
 	}
 }
