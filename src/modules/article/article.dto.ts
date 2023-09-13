@@ -39,3 +39,9 @@ export class UpdateArticleDto extends ArticleDto {
 	@IsOptional()
 	content: string
 }
+
+export class FindDto {
+	@IsOptional()
+	@IsString()
+	categoryId: string
+}

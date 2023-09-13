@@ -1,7 +1,7 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { CreateArticleDto, UpdateArticleDto } from './article.dto'
+import { CreateArticleDto, FindDto, UpdateArticleDto } from './article.dto'
 import { Article } from '@/typeorm/Article'
 import { ArticleCategory } from '@/typeorm/Category'
 
@@ -15,8 +15,17 @@ export class ArticleService {
 		@InjectRepository(ArticleCategory) private CateRepository: Repository<ArticleCategory>
 	) {}
 
-	async findAll(query: PaginateDto) {
-		return await pagination(this.ArticleRepository, query)
+	async findAll(query: PaginateDto & FindDto) {
+		return await pagination(this.ArticleRepository, query, {
+			where: {
+				category: {
+					id: query.categoryId
+				}
+			},
+			order: {
+				updatedAt: 1
+			}
+		})
 	}
 
 	async findOne(id: string) {

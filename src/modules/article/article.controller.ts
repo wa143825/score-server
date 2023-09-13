@@ -1,5 +1,5 @@
 import { Body, Controller, Query, Delete, Get, Post, Param, Patch, HttpCode } from '@nestjs/common'
-import { CreateArticleDto, UpdateArticleDto } from './article.dto'
+import { CreateArticleDto, UpdateArticleDto, FindDto } from './article.dto'
 import { ArticleService } from './article.service'
 import { PaginateDto } from '@/utils/dto'
 import { Msg } from '@/decorator/responser.decorator'
@@ -9,7 +9,7 @@ export class ArticleController {
 	constructor(private articleService: ArticleService) {}
 
 	@Get()
-	findAll(@Query() query: PaginateDto) {
+	findAll(@Query() query: PaginateDto & FindDto) {
 		return this.articleService.findAll(query)
 	}
 

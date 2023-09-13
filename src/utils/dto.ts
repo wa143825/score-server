@@ -25,8 +25,3 @@ export class PaginateDto {
 	sort: SortType.Asc | SortType.Desc
 }
 
-export const PaginateValue:PaginateDto = {
-	pageNum: 10,
-	pageSize: 10,
-	sort: 1
-}
