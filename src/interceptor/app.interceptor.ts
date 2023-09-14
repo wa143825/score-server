@@ -10,18 +10,20 @@ import { StreamableFile } from '@nestjs/common/file-stream'
 export class AppIntercepter extends ClassSerializerInterceptor {
 	serialize(response: PlainLiteralObject | Array<PlainLiteralObject>, options: ClassTransformOptions): PlainLiteralObject | PlainLiteralObject[] {
 		let data: any
-
 		// 如果不是对象,不是数组, 不是流 则直接返回
 		if ((!isObject(response) && !isArray(response)) || response instanceof StreamableFile) {
+			console.log(1);
 			data = response
 		}
 
 		// 如果是数组,则遍历对每一项进行序列化
 		else if (isArray(response)) {
+			console.log(1);
 			data = (response as PlainLiteralObject[]).map((item) => (!isObject(item) ? item : this.transformToPlain(item, options)))
 		}
 		// 如果是分页数据,则对items中的每一项进行序列化
 		else if ('count' in response && 'items' in response) {
+			console.log(3);
 			const items = !isNil(response.items) && isArray(response.items) ? response.items : []
 			data = {
 				...response,
@@ -30,6 +32,8 @@ export class AppIntercepter extends ClassSerializerInterceptor {
 				}),
 			}
 		} else {
+			console.log(4);
+
 			// 如果响应是个对象则直接序列化
 			data = this.transformToPlain(response, options)
 		}

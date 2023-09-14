@@ -15,12 +15,16 @@ export class UserService {
 		@InjectRepository(Profile) private profileRepository: Repository<Profile>,
 	) {}
 
-	async findUsers(query: PaginateDto) {
-		return await pagination(this.userRepository, query, { relations: ['profile'] })
+	async findAll(query: PaginateDto) {
+		return await pagination(this.userRepository, query, {relations: ['profile']})
 	}
 
-	async findUserById(id: string) {
-		const data = await this.userRepository.createQueryBuilder('user').where({ id }).innerJoinAndSelect('user.profile', 'profile').getOne()
+	async findOne(id: string) {
+		const data = await this.userRepository
+			.createQueryBuilder('user')
+			.where({ id })
+			.leftJoinAndSelect('user.profile', 'profile')
+			.getOne()
 		return data
 	}
 

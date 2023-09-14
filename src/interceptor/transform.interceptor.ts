@@ -20,8 +20,8 @@ export class TransformInterceptor implements NestInterceptor {
 					// 1、修改成功，只返回200
 					return res
 				} else if (data) {
-					// 2、有数据，为列表则返回row, 对象为data
-					return data instanceof Array ? {...res, row: data} : {...res, data}
+					// 2、对象为data
+					return {...res, data}
 				} else {
 					// 3、无数据则返回400
 					return {

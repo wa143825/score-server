@@ -9,12 +9,12 @@ export class UserController {
 
 	@Get()
 	async get(@Query() query: PaginateDto) {
-		return await this.userService.findUsers(query)
+		return await this.userService.findAll(query)
 	}
 
 	@Get(':id')
 	async getById(@Param('id') id: string) {
-		return await this.userService.findUserById(id)
+		return await this.userService.findOne(id)
 	}
 
 	@Post()

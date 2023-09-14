@@ -14,9 +14,6 @@ export class User extends BaseEntity {
 	@Column({ comment: '用户密码' })
 	password!: string
 
-	@Column({ nullable: true })
-	authStrategy: string
-
 	@Expose()
 	@OneToOne(() => Profile, (profile) => profile.user)
 	@JoinColumn()
