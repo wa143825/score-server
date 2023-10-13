@@ -8,11 +8,20 @@ import { ArticleCategory } from '@/typeorm/Category'
 import { pagination } from '@/utils/database'
 import { PaginateDto } from '@/utils/dto'
 
+import { TagService } from '../tag/tag.service'
+import { CategoryService } from '../category/category.service'
+
+import * as _ from 'lodash'
+
 @Injectable()
 export class ArticleService {
 	constructor(
 		@InjectRepository(Article) private ArticleRepository: Repository<Article>,
-		@InjectRepository(ArticleCategory) private CateRepository: Repository<ArticleCategory>
+		@InjectRepository(ArticleCategory) private CateRepository: Repository<ArticleCategory>,
+
+
+		private readonly tagService: TagService,
+		private readonly CateService: CategoryService
 	) {}
 
 	async findAll(query: PaginateDto & FindDto) {
@@ -20,7 +29,7 @@ export class ArticleService {
 			where: {
 				category: {
 					id: query.categoryId
-				}
+				},
 			},
 			order: {
 				updatedAt: 1
@@ -35,15 +44,18 @@ export class ArticleService {
 	}
 
 	async create(params: CreateArticleDto) {
-		const { categoryId } = params
-		const cateData = await this.CateRepository.findOneBy({id: categoryId})
-		if(!cateData) throw new NotFoundException('分类未找到')
+		const { categoryId, title, tagIds } = params
+		const cateData = await this.CateService.findOne(categoryId)
+		let existTags
+		if(!_.isEmpty(tagIds)) {
+			existTags = await this.tagService.findByIds(tagIds)
+		}
 
-		const { title } = params
 		const data = await this.ArticleRepository.findOneBy({ title })
 		if (data) throw new ConflictException('标题已存在')
 		const newData = await this.ArticleRepository.create(params)
 		newData.category = cateData
+		newData.tags = existTags
 		return await this.ArticleRepository.save(newData)
 	}
 

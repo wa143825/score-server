@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Repository, In } from 'typeorm'
 import { CreateTagDto, UpdateTagDto } from './tag.dto'
 import { ArticleTag } from '@/typeorm/Tag'
 
@@ -19,6 +19,10 @@ export class TagService {
 
 	async findAll(query: PaginateDto) {
 		return await pagination(this.TagRepository, query)
+	}
+
+	async findByIds(ids: string[]) {
+		return await this.TagRepository.findBy({id: In(ids)})
 	}
 
 	async create(params: CreateTagDto) {

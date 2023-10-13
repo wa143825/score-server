@@ -8,5 +8,6 @@ import { ArticleTag } from '@/typeorm/Tag'
 	imports: [TypeOrmModule.forFeature([ArticleTag])],
 	controllers: [TagController],
 	providers: [TagService],
+	exports: [TagService]
 })
 export class TagModule {}

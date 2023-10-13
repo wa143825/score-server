@@ -27,6 +27,7 @@ import { UserModule } from './modules/user/user.module'
 			database: 'score',
 			entities: Entities,
 			synchronize: true,
+			dateStrings: true
 		}),
 		ConfigModule.forRoot({
 			load: [configuration],
