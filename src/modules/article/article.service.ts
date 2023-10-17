@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Repository, In} from 'typeorm'
 import { CreateArticleDto, FindDto, UpdateArticleDto } from './article.dto'
 import { Article } from '@/typeorm/Article'
 import { ArticleCategory } from '@/typeorm/Category'
@@ -19,20 +19,27 @@ export class ArticleService {
 		@InjectRepository(Article) private ArticleRepository: Repository<Article>,
 		@InjectRepository(ArticleCategory) private CateRepository: Repository<ArticleCategory>,
 
-
 		private readonly tagService: TagService,
 		private readonly CateService: CategoryService
 	) {}
 
 	async findAll(query: PaginateDto & FindDto) {
+		console.log(query.tagIds);
+		let ids: string[] | null = null
+		if (query.tagIds) {
+			ids = query.tagIds instanceof Array ? query.tagIds : [query.tagIds]
+		}
 		return await pagination(this.ArticleRepository, query, {
 			where: {
 				category: {
-					id: query.categoryId
+					id: query.categoryId || null
 				},
+				tags: {
+					id: ids ? In(ids) : null
+				}
 			},
 			order: {
-				updatedAt: 1
+				updatedAt: -1
 			}
 		})
 	}
@@ -65,9 +72,13 @@ export class ArticleService {
 		return true
 	}
 
-	async update(id: string, params: UpdateArticleDto) {
-		const tag = await this.ArticleRepository.findOneBy({ id })
-		if (!tag) throw new NotFoundException('标签未找到')
-		this.ArticleRepository.update({ id }, { ...params })
+	async modify(params: UpdateArticleDto) {
+		const {id, ...p} = params
+		await this.findOne(id)
+
+		const res = await this.ArticleRepository.update({ id }, p)
+		if(res.affected) {
+			return true
+		}
 	}
 }

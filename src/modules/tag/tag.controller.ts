@@ -40,7 +40,6 @@ export class TagController {
 	@Put()
 	@Msg('修改成功')
 	modify(@Body() data: UpdateTagDto) {
-		console.log(data);
 		return this.tagService.modify(data)
 	}
 }
