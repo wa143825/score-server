@@ -1,31 +1,19 @@
-import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator'
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator'
 
 export class OrganizeDto {
 	@IsString()
+	@IsNotEmpty({message: '组织名称不能为空'})
 	name: string
 
-	@IsOptional()
 	@IsString()
-	description: string
-
 	@IsOptional()
-	@IsString()
-	cover: string
-
-	@IsOptional()
-	@IsNumber()
-	customOrder?: number
+	parentId?: string
 }
 
 export class CreateOrganizeDto extends OrganizeDto {
-	@IsNotEmpty({ message: '分类名称不能为空' })
-	name: string
 }
 
 export class UpdateOrganizeDto extends OrganizeDto {
 	@IsNotEmpty({message: 'id不能为空'})
 	id: string
-
-	@IsOptional()
-	name: string
 }

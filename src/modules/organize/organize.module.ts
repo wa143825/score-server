@@ -9,4 +9,4 @@ import { Organize } from '@/typeorm/Organize'
 	controllers: [OrganizeController],
 	providers: [OrganizeService],
 })
-export class CategoryModule {}
+export class OrganizeModule {}

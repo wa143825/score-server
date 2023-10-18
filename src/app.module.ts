@@ -15,6 +15,7 @@ import { CategoryModule } from './modules/category/category.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { TagModule } from './modules/tag/tag.module'
 import { UserModule } from './modules/user/user.module'
+import { OrganizeModule } from './modules/organize/organize.module'
 
 @Module({
 	imports: [
@@ -41,6 +42,7 @@ import { UserModule } from './modules/user/user.module'
 		ArticleModule,
 		CategoryModule,
 		UserModule,
+		OrganizeModule
 	],
 	providers: [
 		{
