@@ -40,6 +40,7 @@
 		"lodash": "^4.17.21",
 		"log4js": "^6.9.1",
 		"mysql2": "^2.3.3",
+		"redis": "^4.6.10",
 		"reflect-metadata": "^0.1.13",
 		"rimraf": "^3.0.2",
 		"run-script-webpack-plugin": "^0.1.1",
