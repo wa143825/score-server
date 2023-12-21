@@ -11,7 +11,7 @@ export class OrganizeService {
 		@InjectRepository(Organize) private orgRepository: Repository<Organize>,
 	) {}
 
-	async findOne(id: string) {
+	async findOne(id: number) {
 		const data = await this.orgRepository.findOne({
 			where: {id},
 			relations: ['children']
@@ -44,7 +44,7 @@ export class OrganizeService {
 		return await this.orgRepository.save(newData)
 	}
 
-	async delete(id: string) {
+	async delete(id: number) {
 		await this.findOne(id)
 
 		const res = await this.orgRepository.delete({ id })

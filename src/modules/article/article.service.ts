@@ -24,8 +24,7 @@ export class ArticleService {
 	) {}
 
 	async findAll(query: PaginateDto & FindDto) {
-		console.log(query.tagIds);
-		let ids: string[] | null = null
+		let ids: number[] | null = null
 		if (query.tagIds) {
 			ids = query.tagIds instanceof Array ? query.tagIds : [query.tagIds]
 		}
@@ -44,7 +43,7 @@ export class ArticleService {
 		})
 	}
 
-	async findOne(id: string) {
+	async findOne(id: number) {
 		const data = await this.ArticleRepository.findOneBy({ id })
 		if (!data) throw new NotFoundException('文章未找到')
 		return data
@@ -66,7 +65,7 @@ export class ArticleService {
 		return await this.ArticleRepository.save(newData)
 	}
 
-	async delete(id: string) {
+	async delete(id: number) {
 		const data = await this.findOne(id)
 		await this.ArticleRepository.delete({ id: data.id })
 		return true

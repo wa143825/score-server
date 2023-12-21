@@ -11,7 +11,7 @@ import { pagination } from '@/utils/database'
 export class TagService {
 	constructor(@InjectRepository(ArticleTag) private TagRepository: Repository<ArticleTag>) {}
 
-	async findOne(id: string) {
+	async findOne(id: number) {
 		const data = await this.TagRepository.findOneBy({ id })
 		if (!data) throw new NotFoundException('标签未找到')
 		return data
@@ -21,7 +21,7 @@ export class TagService {
 		return await pagination(this.TagRepository, query)
 	}
 
-	async findByIds(ids: string[]) {
+	async findByIds(ids: number[]) {
 		return await this.TagRepository.findBy({id: In(ids)})
 	}
 
@@ -33,7 +33,7 @@ export class TagService {
 		return await this.TagRepository.save(newTag)
 	}
 
-	async delete(id: string) {
+	async delete(id: number) {
 		await this.findOne(id)
 
 		const res = await this.TagRepository.delete({ id })

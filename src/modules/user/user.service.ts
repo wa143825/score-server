@@ -19,7 +19,7 @@ export class UserService {
 		return await pagination(this.userRepository, query, {relations: ['profile']})
 	}
 
-	async findOne(id: string) {
+	async findOne(id: number) {
 		const data = await this.userRepository
 			.createQueryBuilder('user')
 			.where({ id })
@@ -33,15 +33,15 @@ export class UserService {
 		return this.userRepository.save(newUser)
 	}
 
-	async updateUser(id: string, updateUserDetail: UpdateUserDto) {
+	async updateUser(id: number, updateUserDetail: UpdateUserDto) {
 		return this.userRepository.update({ id }, { ...updateUserDetail })
 	}
 
-	async deleteUser(id: string) {
+	async deleteUser(id: number) {
 		return this.userRepository.delete({ id })
 	}
 
-	async createUserProfile(id: string, createUserProfileDetails: CreateUserProfileDto) {
+	async createUserProfile(id: number, createUserProfileDetails: CreateUserProfileDto) {
 		const user = await this.userRepository.findOneBy({ id })
 		if (!user) throw new HttpException('User not found, Cannot create Profile', HttpStatus.BAD_REQUEST)
 

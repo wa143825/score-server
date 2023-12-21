@@ -14,7 +14,7 @@ export class CategoryService {
 		@InjectRepository(ArticleCategory) private CateRepository: Repository<ArticleCategory>,
 	) {}
 
-	async findOne(id: string) {
+	async findOne(id: number) {
 		const data = await this.CateRepository.findOneBy({ id })
 		if (!data) throw new NotFoundException('分类未找到')
 		return data
@@ -32,7 +32,7 @@ export class CategoryService {
 		return await this.CateRepository.save(newData)
 	}
 
-	async delete(id: string) {
+	async delete(id: number) {
 		await this.findOne(id)
 
 		const res = await this.CateRepository.delete({ id })

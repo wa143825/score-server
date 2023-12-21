@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode, ParseIntPipe } from '@nestjs/common'
 import { Msg } from '@/decorator/responser.decorator'
 import { CreateOrganizeDto, UpdateOrganizeDto } from './organize.dto'
 import { OrganizeService } from './organize.service'
@@ -13,7 +13,7 @@ export class OrganizeController {
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: string) {
+	findOne(@Param('id', ParseIntPipe) id: number) {
 		return this.orgService.findOne(id)
 	}
 
@@ -25,7 +25,7 @@ export class OrganizeController {
 
 	@Delete(':id')
 	@Msg('删除成功')
-	delete(@Param('id') id: string) {
+	delete(@Param('id', ParseIntPipe) id: number) {
 		return this.orgService.delete(id)
 	}
 

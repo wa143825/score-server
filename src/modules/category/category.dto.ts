@@ -24,7 +24,7 @@ export class CreateCateDto extends CateDto {
 
 export class UpdateCateDto extends CateDto {
 	@IsNotEmpty({message: 'id不能为空'})
-	id: string
+	id: number
 
 	@IsOptional()
 	name: string

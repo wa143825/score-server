@@ -7,7 +7,7 @@ export class OrganizeDto {
 
 	@IsString()
 	@IsOptional()
-	parentId?: string
+	parentId?: number
 }
 
 export class CreateOrganizeDto extends OrganizeDto {
@@ -15,5 +15,5 @@ export class CreateOrganizeDto extends OrganizeDto {
 
 export class UpdateOrganizeDto extends OrganizeDto {
 	@IsNotEmpty({message: 'id不能为空'})
-	id: string
+	id: number
 }

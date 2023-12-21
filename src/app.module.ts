@@ -16,6 +16,7 @@ import { AuthModule } from './modules/auth/auth.module'
 import { TagModule } from './modules/tag/tag.module'
 import { UserModule } from './modules/user/user.module'
 import { OrganizeModule } from './modules/organize/organize.module'
+import { FilesModule } from './modules/files/files.module'
 
 @Module({
 	imports: [
@@ -42,7 +43,8 @@ import { OrganizeModule } from './modules/organize/organize.module'
 		ArticleModule,
 		CategoryModule,
 		UserModule,
-		OrganizeModule
+		OrganizeModule,
+		FilesModule
 	],
 	providers: [
 		{

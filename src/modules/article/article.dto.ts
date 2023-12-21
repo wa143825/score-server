@@ -23,12 +23,12 @@ class ArticleDto {
 export class CreateArticleDto extends ArticleDto {
 	@IsNotEmpty({ message: '标题不能为空' })
 	@IsString({message: '分类ID必须为字符串'})
-	categoryId: string
+	categoryId: number
 
 	@IsOptional()
 	@IsArray({message: '标签需要为数组'})
 	@ArrayMaxSize(3, {message: '最多3个标签'})
-	tagIds: string[]
+	tagIds: number[]
 
 	@IsNotEmpty({ message: '标题不能为空' })
 	title: string
@@ -39,7 +39,7 @@ export class CreateArticleDto extends ArticleDto {
 
 export class UpdateArticleDto extends ArticleDto {
 	@IsNotEmpty({message: 'id不能为空'})
-	id: string
+	id: number
 
 	@IsOptional()
 	title: string
@@ -51,9 +51,9 @@ export class UpdateArticleDto extends ArticleDto {
 export class FindDto {
 	@IsOptional()
 	@IsString()
-	categoryId: string
+	categoryId: number
 
 	@IsOptional()
 	@IsArray()
-	tagIds: string[]
+	tagIds: number[]
 }

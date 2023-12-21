@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode, ParseIntPipe } from '@nestjs/common'
 import { Msg } from '@/decorator/responser.decorator'
 import { CreateTagDto, UpdateTagDto } from './tag.dto'
 import { TagService } from './tag.service'
@@ -15,7 +15,7 @@ export class TagController {
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: string) {
+	findOne(@Param('id', ParseIntPipe) id: number) {
 		return this.tagService.findOne(id)
 	}
 
@@ -33,7 +33,7 @@ export class TagController {
 
 	@Delete(':id')
 	@Msg('删除成功')
-	delete(@Param('id') id: string) {
+	delete(@Param('id', ParseIntPipe) id: number) {
 		return this.tagService.delete(id)
 	}
 

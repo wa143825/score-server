@@ -16,7 +16,7 @@ export class CreateTagDto extends TagDto {
 
 export class UpdateTagDto extends TagDto {
 	@IsNotEmpty({message: 'id不能为空'})
-	id: string
+	id: number
 
 	@IsOptional()
 	name: string

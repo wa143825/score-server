@@ -1,11 +1,13 @@
 import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Timestamp } from 'typeorm'
-import { Expose, Transform } from 'class-transformer'
+import { Expose } from 'class-transformer'
 
 
 export abstract class BaseEntity {
 	@Expose()
-	@PrimaryGeneratedColumn('uuid')
-	id!: string
+	@PrimaryGeneratedColumn({
+		type: 'int'
+	})
+	id: number = null
 
 	@Expose()
 	@CreateDateColumn({ comment: '创建时间' })

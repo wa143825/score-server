@@ -63,7 +63,6 @@ export class AuthService {
 				userAgent,
 			},
 		)
-		console.log(session)
 		return {
 			accessToken: await this.getAccessToken(session.user, session.id),
 			refreshToken: token,
@@ -104,7 +103,7 @@ export class AuthService {
 	}
 
 	// 生成一个token
-	private async getAccessToken(user: User, sessionId: string) {
+	private async getAccessToken(user: User, sessionId: number) {
 		const payload = {
 			id: user.id,
 			sessionId,

@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { SignOptions, sign, VerifyOptions, verify } from 'jsonwebtoken'
-import { async as cryptoRandomString } from 'crypto-random-string'
+import cryptoRandomString from 'crypto-random-string'
 
 const JWT_SECRET = 'security.jwtSecret'
 
