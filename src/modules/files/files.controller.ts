@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, Body, UseInterceptors, Get, Param, Delete } from "@nestjs/common";
+import { Controller, Post, UploadedFile, Body, UseInterceptors, Get, Param, Delete, ParseIntPipe } from "@nestjs/common";
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { FilesService } from './files.service'
@@ -16,10 +16,8 @@ export class FilesController {
 			}
 		})
 	}))
-	upload(@UploadedFile() file, @Body() body ) {
-		console.log('file', file);
-		console.log('body', body);
-		return this.filesService.upload(file, body)
+	upload(@UploadedFile() file) {
+		return this.filesService.upload(file)
 	}
 
 	@Get(':path')
@@ -29,7 +27,7 @@ export class FilesController {
 	}
 
 	@Delete(':id')
-	delete(@Param('id') id: string) {
+	delete(@Param('id', ParseIntPipe) id: number) {
 		this.filesService.delete(id)
 	}
 }

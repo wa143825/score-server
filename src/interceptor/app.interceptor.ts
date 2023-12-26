@@ -10,6 +10,7 @@ import { StreamableFile } from '@nestjs/common/file-stream'
 export class AppIntercepter extends ClassSerializerInterceptor {
 	serialize(response: PlainLiteralObject | Array<PlainLiteralObject>, options: ClassTransformOptions): PlainLiteralObject | PlainLiteralObject[] {
 		let data: any
+
 		// 如果不是对象,不是数组, 不是流 则直接返回
 		if ((!isObject(response) && !isArray(response)) || response instanceof StreamableFile) {
 			data = response

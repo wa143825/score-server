@@ -43,7 +43,7 @@ export class UserService {
 
 	async createUserProfile(id: number, createUserProfileDetails: CreateUserProfileDto) {
 		const user = await this.userRepository.findOneBy({ id })
-		if (!user) throw new HttpException('User not found, Cannot create Profile', HttpStatus.BAD_REQUEST)
+		if (!user) throw new HttpException('用户未找到', HttpStatus.BAD_REQUEST)
 
 		const newProfile = this.profileRepository.create(createUserProfileDetails)
 		const savedProfile = await this.profileRepository.save(newProfile)

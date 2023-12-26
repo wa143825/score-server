@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
-import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core'
+import { APP_INTERCEPTOR, APP_FILTER, APP_GUARD } from '@nestjs/core'
 import Entities from '@/typeorm'
 
 import { AppController } from './app.controller'
@@ -17,6 +17,7 @@ import { TagModule } from './modules/tag/tag.module'
 import { UserModule } from './modules/user/user.module'
 import { OrganizeModule } from './modules/organize/organize.module'
 import { FilesModule } from './modules/files/files.module'
+import { JwtAuthGuard } from './modules/auth/auth.guard';
 
 @Module({
 	imports: [
@@ -59,6 +60,10 @@ import { FilesModule } from './modules/files/files.module'
 			provide: APP_FILTER,
 			useClass: HttpExceptionFilter,
 		},
+		{
+			provide: APP_GUARD,
+			useClass: JwtAuthGuard
+		}
 	],
 	controllers: [AppController],
 })

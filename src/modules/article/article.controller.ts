@@ -14,7 +14,7 @@ export class ArticleController {
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: string) {
+	findOne(@Param('id') id: number) {
 		return this.articleService.findOne(id)
 	}
 
@@ -26,7 +26,7 @@ export class ArticleController {
 
 	@Delete(':id')
 	@Msg('删除成功')
-	delete(@Param('id') id: string) {
+	delete(@Param('id') id: number) {
 		return this.articleService.delete(id)
 	}
 

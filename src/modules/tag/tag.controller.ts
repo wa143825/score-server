@@ -9,8 +9,6 @@ export class TagController {
 
 	@Get()
 	findAll(@Query() query: PaginateDto) {
-		console.log(query);
-
 		return this.tagService.findAll(query)
 	}
 
@@ -20,8 +18,7 @@ export class TagController {
 	}
 
 	@Get('ids')
-	findByIds(@Query() query: {ids: string[]}) {
-		console.log(query.ids);
+	findByIds(@Query() query: {ids: number[]}) {
 		return this.tagService.findByIds(query.ids)
 	}
 

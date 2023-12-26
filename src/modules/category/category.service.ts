@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateCateDto, UpdateCateDto } from './category.dto'
 import { ArticleCategory } from '@/typeorm/Category'
-import { Article } from '@/typeorm/Article'
 
 import { PaginateDto } from '@/utils/dto'
 import { pagination } from '@/utils/database'
