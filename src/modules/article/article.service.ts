@@ -38,7 +38,7 @@ export class ArticleService {
 				}
 			},
 			order: {
-				updatedAt: -1
+				modifyAt: -1
 			}
 		})
 	}

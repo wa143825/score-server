@@ -6,7 +6,8 @@ const configuration: Configuration = {
 	},
 	security: {
 		jwtSecret: 'revive',
-		accessTokenExpiry: '1h',
+		accessTokenExpiry: '30d',
+		unusedRefreshTokenExpiryDays: 30
 	},
 	redis: {
 		namespace: 'score',

@@ -5,6 +5,7 @@ export interface Configuration {
 	security: {
 		jwtSecret: string
 		accessTokenExpiry: string
+		unusedRefreshTokenExpiryDays: number
 	},
 	redis: {
 		namespace: string,

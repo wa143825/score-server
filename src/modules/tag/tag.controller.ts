@@ -1,11 +1,14 @@
-import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode, ParseIntPipe } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode, ParseIntPipe, Headers } from '@nestjs/common'
 import { Msg } from '@/decorator/responser.decorator'
 import { CreateTagDto, UpdateTagDto } from './tag.dto'
 import { TagService } from './tag.service'
 import { PaginateDto } from '@/utils/dto'
+import { LOGIN_accessToken } from '@/constant/access.constant'
 @Controller('tag')
 export class TagController {
-	constructor(private tagService: TagService) {}
+	constructor(
+		private tagService: TagService,
+	) {}
 
 	@Get()
 	findAll(@Query() query: PaginateDto) {

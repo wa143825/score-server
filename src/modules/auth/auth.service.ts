@@ -95,9 +95,9 @@ export class AuthService {
 			browser: `${ua.getBrowser().name ?? ''} ${ua.getBrowser().version ?? ''}`.trim() || '',
 			operatingSystem: `${ua.getOS().name ?? ''} ${ua.getOS().version ?? ''}`.replace('Mac OS', 'macOS').trim() || '',
 		})
-		this.sessionRepository.save(newSession)
+		const savedSession = await this.sessionRepository.save(newSession)
 		return {
-			accessToken: await this.getAccessToken(user, newSession.id),
+			accessToken: await this.getAccessToken(user, savedSession.id),
 			refreshToken: token,
 		}
 	}

@@ -12,7 +12,8 @@ export class TagService {
 	constructor(@InjectRepository(ArticleTag) private TagRepository: Repository<ArticleTag>) {}
 
 	async findOne(id: number) {
-		const data = await this.TagRepository.findOneBy({ id })
+		const data = await this.TagRepository.findOneBy({id})
+
 		if (!data) throw new NotFoundException('标签未找到')
 		return data
 	}
@@ -27,10 +28,10 @@ export class TagService {
 
 	async create(params: CreateTagDto) {
 		const { name } = params
-		const tag = await this.TagRepository.findOneBy({ name })
-		if (tag) throw new ConflictException('标签已存在')
-		const newTag = await this.TagRepository.create(params)
-		return await this.TagRepository.save(newTag)
+		const data = await this.TagRepository.findOneBy({ name })
+		if (data) throw new ConflictException('标签已存在')
+		const newData = await this.TagRepository.create(params)
+		return await this.TagRepository.save(newData)
 	}
 
 	async delete(id: number) {
@@ -51,6 +52,4 @@ export class TagService {
 			return true
 		}
 	}
-
-	private async aggregate() {}
 }

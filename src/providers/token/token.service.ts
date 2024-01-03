@@ -18,14 +18,14 @@ export class TokenService {
 		})
 	}
 
-	verify<T>(subject: string, token: string, options: VerifyOptions) {
+	verify<T>(subject: string, token: string, options?: VerifyOptions) {
 		try {
 			return verify(token, this.configService.get<string>(JWT_SECRET) ?? '', {
 				...options,
 				subject,
 			}) as any as T
 		} catch (error) {
-			throw new UnauthorizedException('invalid token')
+			throw new UnauthorizedException('无效的token')
 		}
 	}
 

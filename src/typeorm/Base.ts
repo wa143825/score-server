@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Timestamp } from 'typeorm'
+import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column } from 'typeorm'
 import { Expose } from 'class-transformer'
 
 
@@ -14,6 +14,14 @@ export abstract class BaseEntity {
 	createAt!: Date
 
 	@Expose()
-	@UpdateDateColumn({ comment: '更新时间' })
-	updatedAt!: Date
+	@Column({ comment: '创建人' })
+	creator: Number = null
+
+	@Expose()
+	@UpdateDateColumn({ comment: '修改时间' })
+	modifyAt!: Date
+
+	@Expose()
+	@Column({ comment: '修改人', nullable: true })
+	modifier: Number = null
 }

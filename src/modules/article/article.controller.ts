@@ -35,5 +35,4 @@ export class ArticleController {
 	modify(@Body() data: UpdateArticleDto) {
 		return this.articleService.modify(data)
 	}
-
 }

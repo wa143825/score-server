@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
 import { APP_INTERCEPTOR, APP_FILTER, APP_GUARD } from '@nestjs/core'
@@ -18,6 +18,9 @@ import { UserModule } from './modules/user/user.module'
 import { OrganizeModule } from './modules/organize/organize.module'
 import { FilesModule } from './modules/files/files.module'
 import { JwtAuthGuard } from './modules/auth/auth.guard';
+import { TokenModule } from './providers/token/token.module';
+
+import { TokenMiddleware } from '@/middleware/token.middleware'
 
 @Module({
 	imports: [
@@ -45,7 +48,8 @@ import { JwtAuthGuard } from './modules/auth/auth.guard';
 		CategoryModule,
 		UserModule,
 		OrganizeModule,
-		FilesModule
+		FilesModule,
+		TokenModule
 	],
 	providers: [
 		{
@@ -67,4 +71,11 @@ import { JwtAuthGuard } from './modules/auth/auth.guard';
 	],
 	controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+	configure(consumer: MiddlewareConsumer) {
+			consumer
+				.apply(TokenMiddleware)
+				.forRoutes('*')
+
+	}
+}
