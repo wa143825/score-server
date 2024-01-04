@@ -4,6 +4,12 @@ import { ConfigModule } from '@nestjs/config'
 import { APP_INTERCEPTOR, APP_FILTER, APP_GUARD } from '@nestjs/core'
 import Entities from '@/typeorm'
 
+// 日志
+import { WinstonModule } from 'nest-winston'
+import * as winston from 'winston';
+import { format } from 'winston';
+import 'winston-daily-rotate-file'
+
 import { AppController } from './app.controller'
 import { ArticleModule } from './modules/article/article.module'
 import { TransformInterceptor } from './interceptor/transform.interceptor'
@@ -21,6 +27,8 @@ import { JwtAuthGuard } from './modules/auth/auth.guard';
 import { TokenModule } from './providers/token/token.module';
 
 import { TokenMiddleware } from '@/middleware/token.middleware'
+
+const { combine } = format;
 
 @Module({
 	imports: [
@@ -41,6 +49,39 @@ import { TokenMiddleware } from '@/middleware/token.middleware'
 			isGlobal: true,
 			cache: true,
 			envFilePath: '.env',
+		}),
+		WinstonModule.forRoot({
+			format: combine(
+				winston.format.timestamp({
+          format: 'YYYY-MM-DD HH:mm:ss',
+      	}),
+				winston.format.printf((info) => {   // 定义文件输出内容
+					return `时间:${info.timestamp},日志类型:${info.level},${info?.context ? `运行背景: ${info.context},` : '' }日志信息: ${info.message}`
+				})
+			),
+			transports: [
+				// 输出文件
+				new winston.transports.DailyRotateFile({
+          level: 'info',
+          filename: 'logFile/info-%DATE%.log',
+          datePattern: 'YYYY-MM-DD-HH',
+          zippedArchive: true,
+          maxSize: '10m',
+          maxFiles: '14d'
+        }),
+        new winston.transports.DailyRotateFile({
+          level: 'warn',
+          filename: 'logFile/warn-%DATE%.log',
+          datePattern: 'YYYY-MM-DD-HH',
+          zippedArchive: true,
+          maxSize: '10m',
+          maxFiles: '30d'
+        }),
+			],
+			// 未捕获的异常
+			exceptionHandlers: [
+				new winston.transports.File({ filename: 'logFile/exceptions.log' })
+			]
 		}),
 		AuthModule,
 		TagModule,

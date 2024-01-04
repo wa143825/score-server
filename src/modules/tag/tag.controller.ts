@@ -1,13 +1,17 @@
-import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode, ParseIntPipe, Headers } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode, ParseIntPipe, Inject } from '@nestjs/common'
 import { Msg } from '@/decorator/responser.decorator'
 import { CreateTagDto, UpdateTagDto } from './tag.dto'
 import { TagService } from './tag.service'
 import { PaginateDto } from '@/utils/dto'
-import { LOGIN_accessToken } from '@/constant/access.constant'
+
+import { LoggerService } from '@nestjs/common';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+
 @Controller('tag')
 export class TagController {
 	constructor(
 		private tagService: TagService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: LoggerService
 	) {}
 
 	@Get()
@@ -17,6 +21,7 @@ export class TagController {
 
 	@Get(':id')
 	findOne(@Param('id', ParseIntPipe) id: number) {
+		this.logger.warn('123')
 		return this.tagService.findOne(id)
 	}
 
