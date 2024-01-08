@@ -44,10 +44,14 @@ export class TagService {
 	}
 
 	async modify(params: UpdateTagDto) {
-		const {id, ...p} = params
-		await this.findOne(id)
-
-		const res = await this.TagRepository.update({ id }, p)
+		const { id } = params
+		const data = await this.findOne(id)
+		for (let key in params) {
+			if (params[key] !== undefined) {
+				data[key] = params[key]
+			}
+		}
+		const res = await this.TagRepository.update(id, data)
 		if(res.affected) {
 			return true
 		}

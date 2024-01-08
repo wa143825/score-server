@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, BeforeInsert, BeforeUpdate } from 'typeorm'
+import { PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from 'typeorm'
 import { Expose } from 'class-transformer'
 import dayjs from 'dayjs'
 
@@ -32,6 +32,7 @@ export abstract class BaseEntity {
 
 	@BeforeUpdate()
 	setModifyDate() {
+		console.log('modifyAt');
 		this.modifyAt = dayjs().format('YYYY/MM/DD HH:mm:ss')
 	}
 }

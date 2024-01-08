@@ -1,3 +1,10 @@
+/*
+ * @LastEditors: LBW
+ * @LastEditTime: 2024-01-08 15:35:41
+ * @Description: 定时器任务，每天检查session是否过期，过期就删掉
+ */
+
+
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Cron, CronExpression } from '@nestjs/schedule'

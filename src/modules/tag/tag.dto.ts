@@ -10,8 +10,6 @@ class TagDto {
 }
 
 export class CreateTagDto extends TagDto {
-	@IsNotEmpty({ message: '标签不能为空' })
-	name: string
 }
 
 export class UpdateTagDto extends TagDto {
@@ -20,4 +18,6 @@ export class UpdateTagDto extends TagDto {
 
 	@IsOptional()
 	name: string
+
+	modifier: number
 }

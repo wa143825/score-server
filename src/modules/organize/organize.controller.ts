@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, Post, Put, Param, Query, HttpCode, Parse
 import { Msg } from '@/decorator/responser.decorator'
 import { CreateOrganizeDto, UpdateOrganizeDto } from './organize.dto'
 import { OrganizeService } from './organize.service'
-import { PaginateDto } from '@/utils/dto'
 @Controller('organize')
 export class OrganizeController {
 	constructor(private orgService: OrganizeService) {}

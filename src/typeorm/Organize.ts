@@ -1,14 +1,15 @@
-import { Column, Entity, ManyToOne, OneToMany, JoinColumn} from 'typeorm'
+import { Column, Entity, Tree, TreeParent, TreeChildren} from 'typeorm'
 import { BaseEntity } from '@/typeorm/Base'
 
 @Entity({ name: 'organize' })
+@Tree('adjacency-list')
 export class Organize extends BaseEntity {
 	@Column({ unique: true })
 	name: string
 
-	@ManyToOne(type => Organize, category => category.children)
+	@TreeParent()
 	parent: Organize;
 
-	@OneToMany(type => Organize, category => category.parent)
+	@TreeChildren()
 	children: Organize[];
 }

@@ -72,10 +72,15 @@ export class ArticleService {
 	}
 
 	async modify(params: UpdateArticleDto) {
-		const {id, ...p} = params
-		await this.findOne(id)
+		const {id} = params
+		const data = await this.findOne(id)
+		for (let key in params) {
+			if (params[key] !== undefined) {
+				data[key] = params[key]
+			}
+		}
 
-		const res = await this.ArticleRepository.update({ id }, p)
+		const res = await this.ArticleRepository.update(id, data)
 		if(res.affected) {
 			return true
 		}
