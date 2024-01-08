@@ -1,7 +1,5 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
+import { Column, Entity } from 'typeorm'
 import { BaseEntity } from './Base'
-import { ArticleCategory } from './Category'
-import { ArticleTag } from './Tag'
 
 @Entity({ name: 'article' })
 export class Article extends BaseEntity {
@@ -26,11 +24,6 @@ export class Article extends BaseEntity {
 	@Column({ comment: '是否公开', type: 'boolean', default: true })
 	public?: boolean
 
-	@ManyToOne(() => ArticleCategory, category => category.articles)
-	@JoinColumn({name: 'categoryId'})
-	category: ArticleCategory
-
-	@ManyToMany(() => ArticleTag)
-	@JoinTable()
-	tags: ArticleTag
+	@Column({comment: '分类id'})
+	categoryId: number
 }

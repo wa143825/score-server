@@ -15,9 +15,10 @@ export class TokenMiddleware implements NestMiddleware {
         const token = req.headers.authorization
         if (token) {
 					const decodeToken: ITokenPayload = this.tokenService.verify(LOGIN_accessToken, token)
-					req.body.modifier = decodeToken.id
 					if (req.method === 'POST') {
 						req.body.creator = decodeToken.id
+					} else if (req.method === 'PUT') {
+						req.body.modifier = decodeToken.id
 					}
         }
 				next()

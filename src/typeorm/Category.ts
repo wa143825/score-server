@@ -1,6 +1,5 @@
-import { Column, Entity, OneToMany } from 'typeorm'
+import { Column, Entity } from 'typeorm'
 import { BaseEntity } from './Base'
-import { Article } from './Article'
 
 @Entity({ name: 'article_category' })
 export class ArticleCategory extends BaseEntity {
@@ -12,7 +11,4 @@ export class ArticleCategory extends BaseEntity {
 
 	@Column({ comment: '排序排序', default: 0 })
 	customOrder?: number
-
-	@OneToMany(() => Article, (article) => article.category)
-	articles: Article[]
 }

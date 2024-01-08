@@ -41,7 +41,7 @@ const { combine } = format;
 			database: 'score',
 			entities: Entities,
 			synchronize: true,
-			dateStrings: true
+			dateStrings: true,
 		}),
 		ConfigModule.forRoot({
 			load: [configuration],
@@ -61,18 +61,18 @@ const { combine } = format;
 			),
 			transports: [
 				// 输出文件
-				new winston.transports.DailyRotateFile({
-          level: 'info',
-          filename: 'logFile/info-%DATE%.log',
-          datePattern: 'YYYY-MM-DD-HH',
-          zippedArchive: true,
-          maxSize: '10m',
-          maxFiles: '14d'
-        }),
+				// new winston.transports.DailyRotateFile({
+        //   level: 'info',
+        //   filename: 'logs/info/%DATE%.log',
+        //   datePattern: 'YYYY-MM-DD',
+        //   zippedArchive: true,
+        //   maxSize: '10m',
+        //   maxFiles: '14d'
+        // }),
         new winston.transports.DailyRotateFile({
           level: 'warn',
-          filename: 'logFile/warn-%DATE%.log',
-          datePattern: 'YYYY-MM-DD-HH',
+          filename: 'logs/warn/%DATE%.log',
+          datePattern: 'YYYY-MM-DD',
           zippedArchive: true,
           maxSize: '10m',
           maxFiles: '30d'
@@ -80,7 +80,7 @@ const { combine } = format;
 			],
 			// 未捕获的异常
 			exceptionHandlers: [
-				new winston.transports.File({ filename: 'logFile/exceptions.log' })
+				new winston.transports.File({ filename: 'logs/exceptions.log' })
 			]
 		}),
 		AuthModule,
@@ -117,6 +117,5 @@ export class AppModule implements NestModule {
 			consumer
 				.apply(TokenMiddleware)
 				.forRoutes('*')
-
 	}
 }

@@ -29,14 +29,14 @@ export class ArticleService {
 			ids = query.tagIds instanceof Array ? query.tagIds : [query.tagIds]
 		}
 		return await pagination(this.ArticleRepository, query, {
-			where: {
-				category: {
-					id: query.categoryId || null
-				},
-				tags: {
-					id: ids ? In(ids) : null
-				}
-			},
+			// where: {
+			// 	category: {
+			// 		id: query.categoryId || null
+			// 	},
+			// 	tags: {
+			// 		id: ids ? In(ids) : null
+			// 	}
+			// },
 			order: {
 				modifyAt: -1
 			}
@@ -60,8 +60,8 @@ export class ArticleService {
 		const data = await this.ArticleRepository.findOneBy({ title })
 		if (data) throw new ConflictException('标题已存在')
 		const newData = await this.ArticleRepository.create(params)
-		newData.category = cateData
-		newData.tags = existTags
+		// newData.category = cateData
+		// newData.tags = existTags
 		return await this.ArticleRepository.save(newData)
 	}
 

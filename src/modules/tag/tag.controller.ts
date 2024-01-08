@@ -21,7 +21,6 @@ export class TagController {
 
 	@Get(':id')
 	findOne(@Param('id', ParseIntPipe) id: number) {
-		this.logger.warn('123')
 		return this.tagService.findOne(id)
 	}
 
