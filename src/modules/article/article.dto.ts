@@ -1,6 +1,15 @@
-import { IsString, IsNotEmpty, IsBoolean, IsOptional, IsArray, ArrayMaxSize } from 'class-validator'
+import { IsString, IsNotEmpty, IsBoolean, IsOptional, IsArray, ArrayMaxSize, IsNumber } from 'class-validator'
 
 class ArticleDto {
+	@IsNotEmpty({ message: '分类不能为空' })
+	@IsNumber()
+	categoryId: number
+
+	@IsOptional()
+	@IsArray({message: '标签需要为数组'})
+	@ArrayMaxSize(3, {message: '最多3个标签'})
+	tagIds: number[]
+
 	@IsString({message: '标题必须为字符串'})
 	title: string
 
@@ -21,15 +30,6 @@ class ArticleDto {
 }
 
 export class CreateArticleDto extends ArticleDto {
-	@IsNotEmpty({ message: '标题不能为空' })
-	@IsString({message: '分类ID必须为字符串'})
-	categoryId: number
-
-	@IsOptional()
-	@IsArray({message: '标签需要为数组'})
-	@ArrayMaxSize(3, {message: '最多3个标签'})
-	tagIds: number[]
-
 	@IsNotEmpty({ message: '标题不能为空' })
 	title: string
 

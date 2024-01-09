@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, In} from 'typeorm'
 import { CreateArticleDto, FindDto, UpdateArticleDto } from './article.dto'
 import { Article } from '@/typeorm/Article'
-import { ArticleCategory } from '@/typeorm/Category'
+import { ArticleTagRelate } from '@/typeorm/ArticleTag'
 
 import { pagination } from '@/utils/database'
 import { PaginateDto } from '@/utils/dto'
@@ -17,7 +17,7 @@ import * as _ from 'lodash'
 export class ArticleService {
 	constructor(
 		@InjectRepository(Article) private ArticleRepository: Repository<Article>,
-		@InjectRepository(ArticleCategory) private CateRepository: Repository<ArticleCategory>,
+		@InjectRepository(ArticleTagRelate) private ArticleTagRelate: Repository<ArticleTagRelate>,
 
 		private readonly tagService: TagService,
 		private readonly CateService: CategoryService
@@ -49,34 +49,73 @@ export class ArticleService {
 		return data
 	}
 
-	async create(params: CreateArticleDto) {
+  // 新增和修改之前校验
+	async beforeCheck (params: CreateArticleDto | UpdateArticleDto) {
 		const { categoryId, title, tagIds } = params
-		const cateData = await this.CateService.findOne(categoryId)
-		let existTags
+		// 2、判断分类
+		await this.CateService.findOne(categoryId)
 		if(!_.isEmpty(tagIds)) {
-			existTags = await this.tagService.findByIds(tagIds)
+			// 3、判断标签
+			const tags = await this.tagService.findByIds(tagIds)
+			if (tags.length !== tagIds.length) {
+				throw new NotFoundException('部分标签不存在')
+			}
 		}
+	}
 
+	async create(params: CreateArticleDto) {
+		await this.beforeCheck(params)
+		const { tagIds, title } = params
 		const data = await this.ArticleRepository.findOneBy({ title })
 		if (data) throw new ConflictException('标题已存在')
+
 		const newData = await this.ArticleRepository.create(params)
-		// newData.category = cateData
-		// newData.tags = existTags
-		return await this.ArticleRepository.save(newData)
+		const saveData = await this.ArticleRepository.save(newData)
+
+		if (tagIds.length > 1) {
+			for (let i = 0; i < tagIds.length; i++) {
+				const relateData = this.ArticleTagRelate.create({
+					article_id: saveData.id,
+					tag_id: tagIds[i]
+				})
+				await this.ArticleTagRelate.save(relateData)
+			}
+		}
+		return '保存成功'
 	}
 
 	async delete(id: number) {
-		const data = await this.findOne(id)
-		await this.ArticleRepository.delete({ id: data.id })
+		await this.findOne(id)
+		await this.ArticleRepository.delete({ id })
+		// 删除的时候同时删除关联的标签关系
+		await this.ArticleTagRelate.delete({
+			article_id: id
+		})
 		return true
 	}
 
 	async modify(params: UpdateArticleDto) {
-		const {id} = params
+		await this.beforeCheck(params)
+
+		const { id } = params
 		const data = await this.findOne(id)
-		for (let key in params) {
+
+		for (let key in data) {
 			if (params[key] !== undefined) {
 				data[key] = params[key]
+			}
+		}
+    await this.ArticleTagRelate.delete({
+			article_id: id
+		})
+    const { tagIds } = params
+    if (tagIds.length > 1) {
+			for (let i = 0; i < tagIds.length; i++) {
+				const relateData = this.ArticleTagRelate.create({
+					article_id: id,
+					tag_id: tagIds[i]
+				})
+				await this.ArticleTagRelate.save(relateData)
 			}
 		}
 

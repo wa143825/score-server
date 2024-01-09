@@ -41,10 +41,15 @@ export class CategoryService {
 	}
 
 	async modify(params: UpdateCateDto) {
-		const {id, ...p} = params
-		await this.findOne(id)
+		const {id} = params
+		const data = await this.findOne(id)
+		for (let key in params) {
+			if (params[key] !== undefined) {
+				data[key] = params[key]
+			}
+		}
 
-		const res = await this.CateRepository.update({ id }, p)
+		const res = await this.CateRepository.update(id, data)
 		if(res.affected) {
 			return true
 		}

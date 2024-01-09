@@ -9,7 +9,7 @@ declare const module: any
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-		logger: ['error','warn']
+		// logger: ['error','warn']
 	})
 
 	app.useGlobalPipes(new ValidatoionPipe())
