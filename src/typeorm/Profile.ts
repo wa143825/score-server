@@ -11,19 +11,21 @@ enum EGender {
 @Exclude()
 @Entity({ name: 'user_profile' })
 export class Profile {
-	@PrimaryGeneratedColumn('uuid')
-	id!: string
+	@PrimaryGeneratedColumn({
+		type: 'int'
+	})
+	id: number
 
 	@Expose()
-	@Column({ comment: '用户昵称' })
-	nickname: string
-
-	@Expose()
-	@Column({ comment: '用户年龄', nullable: true })
+	@Column({ comment: '年龄', nullable: true })
 	age?: number
 
 	@Expose()
-	@Column({ comment: '用户性别', default: EGender.UNKNOWN })
+	@Column({ comment: '头像', nullable: true })
+	avatar?: string
+
+	@Expose()
+	@Column({ comment: '性别', default: EGender.UNKNOWN })
 	gender: EGender
 
 	@OneToOne(() => User, (user) => user.profile)

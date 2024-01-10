@@ -15,15 +15,15 @@ export abstract class BaseEntity {
 
 	@Expose()
 	@Column({ comment: '创建人' })
-	creator: Number = null
+	creator: Number
 
 	@Expose()
 	@Column({ comment: '修改时间', nullable: true })
-	modifyAt: String = null
+	modifyAt: String
 
 	@Expose()
 	@Column({ comment: '修改人', nullable: true })
-	modifier: Number = null
+	modifier: Number
 
 	@BeforeInsert()
 	setCreateDate() {

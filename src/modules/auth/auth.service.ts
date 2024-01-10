@@ -13,6 +13,7 @@ import { LOGIN_accessToken } from '@/constant/access.constant'
 import { TokenService } from '@/providers/token/token.service'
 import { AuthDto } from './auth.dto'
 import { Tokens } from './auth.type'
+import dayjs from 'dayjs'
 
 @Injectable()
 export class AuthService {
@@ -29,8 +30,8 @@ export class AuthService {
 		const { phone, password } = params
 		const user = await this.userRepository.findOneBy({ phone })
 		if (user) throw new ConflictException(USER_CONFLICT)
-		const newUser = this.userRepository.create({ phone, password: await this.hashAndValidatePassword(password) })
-		const newProfile = this.ProfileRepository.create({nickname: `用户${phone.substring(7,11)}`})
+		const newUser = this.userRepository.create({ phone, password: await this.hashAndValidatePassword(password), nickname: `用户${phone.substring(7,11)}` },)
+		const newProfile = this.ProfileRepository.create()
 		newUser.profile = newProfile
 		await this.ProfileRepository.save(newProfile)
 		await this.userRepository.save(newUser)
@@ -92,6 +93,7 @@ export class AuthService {
 			token,
 			user,
 			userAgent,
+			creator: user.id,
 			browser: `${ua.getBrowser().name ?? ''} ${ua.getBrowser().version ?? ''}`.trim() || '',
 			operatingSystem: `${ua.getOS().name ?? ''} ${ua.getOS().version ?? ''}`.replace('Mac OS', 'macOS').trim() || '',
 		})

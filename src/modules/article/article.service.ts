@@ -105,11 +105,11 @@ export class ArticleService {
 				data[key] = params[key]
 			}
 		}
-    await this.ArticleTagRelate.delete({
-			article_id: id
-		})
     const { tagIds } = params
     if (tagIds.length > 1) {
+      await this.ArticleTagRelate.delete({
+        article_id: id
+      })
 			for (let i = 0; i < tagIds.length; i++) {
 				const relateData = this.ArticleTagRelate.create({
 					article_id: id,

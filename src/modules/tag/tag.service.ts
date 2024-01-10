@@ -12,10 +12,17 @@ export class TagService {
 	constructor(@InjectRepository(ArticleTag) private TagRepository: Repository<ArticleTag>) {}
 
 	async findOne(id: number) {
-		const data = await this.TagRepository.findOneBy({id})
+		const data = await this.TagRepository.query(`
+			SELECT article_tag.* , creator_user.nickname AS creator, modifier_user.nickname AS modifier
+			FROM article_tag
+			LEFT JOIN users AS creator_user ON article_tag.creator = creator_user.id
+			LEFT JOIN users AS modifier_user ON article_tag.modifier = modifier_user.id
+			WHERE article_tag.id = ${id}
+			LIMIT 1
+		`)
 
 		if (!data) throw new NotFoundException('标签未找到')
-		return data
+		return data[0]
 	}
 
 	async findAll(query: PaginateDto) {
