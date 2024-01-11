@@ -29,14 +29,9 @@ export class ArticleService {
 			ids = query.tagIds instanceof Array ? query.tagIds : [query.tagIds]
 		}
 		return await pagination(this.ArticleRepository, query, {
-			// where: {
-			// 	category: {
-			// 		id: query.categoryId || null
-			// 	},
-			// 	tags: {
-			// 		id: ids ? In(ids) : null
-			// 	}
-			// },
+			where: {
+				categoryId: query.categoryId,
+			},
 			order: {
 				modifyAt: -1
 			}
@@ -73,14 +68,13 @@ export class ArticleService {
 		const saveData = await this.ArticleRepository.save(newData)
 
 		if (tagIds.length > 1) {
-			for (let i = 0; i < tagIds.length; i++) {
-				const relateData = this.ArticleTagRelate.create({
-					article_id: saveData.id,
-					tag_id: tagIds[i]
-				})
-				await this.ArticleTagRelate.save(relateData)
-			}
+			this.ArticleRepository.createQueryBuilder()
+				.insert()
+				.into(ArticleTagRelate)
+				.values(tagIds.map(i => ({ article_id: saveData.id, tag_id: i})))
+				.execute()
 		}
+
 		return '保存成功'
 	}
 

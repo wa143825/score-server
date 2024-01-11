@@ -18,15 +18,14 @@ export class TagService {
 			LEFT JOIN users AS creator_user ON article_tag.creator = creator_user.id
 			LEFT JOIN users AS modifier_user ON article_tag.modifier = modifier_user.id
 			WHERE article_tag.id = ${id}
-			LIMIT 1
 		`)
 
 		if (!data) throw new NotFoundException('标签未找到')
 		return data[0]
 	}
 
-	async findAll(query: PaginateDto) {
-		return await pagination(this.TagRepository, query)
+	async findAll(params: PaginateDto) {
+		return await pagination(this.TagRepository, params)
 	}
 
 	async findByIds(ids: number[]) {

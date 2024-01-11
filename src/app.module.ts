@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config'
+import { ScheduleModule } from "@nestjs/schedule";
 import { APP_INTERCEPTOR, APP_FILTER, APP_GUARD } from '@nestjs/core'
 import Entities from '@/typeorm'
 
@@ -23,12 +24,13 @@ import { TagModule } from './modules/tag/tag.module'
 import { UserModule } from './modules/user/user.module'
 import { OrganizeModule } from './modules/organize/organize.module'
 import { FilesModule } from './modules/files/files.module'
+import { SocketModule } from './modules/socket/socket.module';
+
 import { JwtAuthGuard } from './modules/auth/auth.guard';
 import { TokenModule } from './providers/token/token.module';
+import { TaskModule } from './providers/task/task.module';
 
 import { TokenMiddleware } from '@/middleware/token.middleware'
-
-const { combine } = format;
 
 @Module({
 	imports: [
@@ -51,7 +53,7 @@ const { combine } = format;
 			envFilePath: '.env',
 		}),
 		WinstonModule.forRoot({
-			format: combine(
+			format: format.combine(
 				winston.format.timestamp({
           format: 'YYYY-MM-DD HH:mm:ss',
       	}),
@@ -60,15 +62,6 @@ const { combine } = format;
 				})
 			),
 			transports: [
-				// 输出文件
-				// new winston.transports.DailyRotateFile({
-        //   level: 'info',
-        //   filename: 'logs/info/%DATE%.log',
-        //   datePattern: 'YYYY-MM-DD',
-        //   zippedArchive: true,
-        //   maxSize: '10m',
-        //   maxFiles: '14d'
-        // }),
         new winston.transports.DailyRotateFile({
           level: 'warn',
           filename: 'logs/warn/%DATE%.log',
@@ -83,6 +76,7 @@ const { combine } = format;
 				new winston.transports.File({ filename: 'logs/exceptions.log' })
 			]
 		}),
+		ScheduleModule.forRoot(),
 		AuthModule,
 		TagModule,
 		ArticleModule,
@@ -90,7 +84,10 @@ const { combine } = format;
 		UserModule,
 		OrganizeModule,
 		FilesModule,
-		TokenModule
+		TokenModule,
+		TaskModule,
+		ScheduleModule,
+		SocketModule
 	],
 	providers: [
 		{

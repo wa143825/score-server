@@ -1,6 +1,6 @@
 /*
  * @LastEditors: LBW
- * @LastEditTime: 2024-01-08 15:35:41
+ * @LastEditTime: 2024-01-11 10:38:55
  * @Description: 定时器任务，每天检查session是否过期，过期就删掉
  */
 
@@ -30,6 +30,5 @@ export class TaskService {
 		if (deleted.affected) {
 			console.log(`已经删除了${deleted.affected}条过期的session`);
 		}
-
 	}
 }
