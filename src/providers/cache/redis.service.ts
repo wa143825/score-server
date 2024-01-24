@@ -11,7 +11,7 @@ export class RedisService {
 	constructor(
 		private configService: ConfigService,
 	) {
-		this.redisClient = createClient()
+		this.redisClient = createClient(this.getOptions()) as RedisClientType
 		this.redisStore = createRedisStore(this.redisClient, {
       defaultTTL: this.configService.get('app.ttl'),
       namespace: this.configService.get('redis.namespace')

@@ -11,7 +11,7 @@ const configuration: Configuration = {
 	},
 	redis: {
 		namespace: 'score',
-		host: 'localhost',
+		host: '10.10.225.37',
 		port: 6379,
 		username: '',
 		password: '',
